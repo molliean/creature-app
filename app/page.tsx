@@ -1,64 +1,71 @@
-import Image from "next/image";
+import { TopNav } from "@/components/TopNav";
+import { BookCarousel } from "@/components/home/BookCarousel";
+import { Tabs } from "@/components/home/Tabs";
 
 export default function Home() {
+  const tabItems = [
+    { label: "All", count: 110 },
+    { label: "Currently reading", count: 4 },
+    { label: "Want to read", count: 28 },
+    { label: "Finished", count: 71 },
+    { label: "Didn’t finish", count: 8 },
+    { label: "Favorites", count: 12 },
+  ];
+
+  const books = [
+    { title: "The Night Circus", author: "Erin Morgenstern", coverTone: "bg-[#3E5868]" },
+    { title: "Klara and the Sun", author: "Kazuo Ishiguro", coverTone: "bg-[#7A5235]" },
+    { title: "Anna Karenina", author: "Leo Tolstoy", coverTone: "bg-[#6B3E4A]" },
+    { title: "Pachinko", author: "Min Jin Lee", coverTone: "bg-[#2D5A52]" },
+    { title: "Martyr!", author: "Kaveh Akbar", coverTone: "bg-[#495164]" },
+    { title: "The Overstory", author: "Richard Powers", coverTone: "bg-[#7B5A3D]" },
+  ];
+
+  const booksRowTwo = [
+    { title: "Beloved", author: "Toni Morrison", coverTone: "bg-[#734E58]" },
+    { title: "The Idiot", author: "Elif Batuman", coverTone: "bg-[#5B6A82]" },
+    { title: "A Little Life", author: "Hanya Yanagihara", coverTone: "bg-[#6B5A46]" },
+    { title: "The Goldfinch", author: "Donna Tartt", coverTone: "bg-[#566B4B]" },
+    { title: "Outline", author: "Rachel Cusk", coverTone: "bg-[#48596A]" },
+    { title: "Real Life", author: "Brandon Taylor", coverTone: "bg-[#6F4F41]" },
+  ];
+
+  const booksRowThree = [
+    { title: "Trust", author: "Hernan Diaz", coverTone: "bg-[#50646B]" },
+    { title: "The Bee Sting", author: "Paul Murray", coverTone: "bg-[#6A5D49]" },
+    { title: "Normal People", author: "Sally Rooney", coverTone: "bg-[#4A6071]" },
+    { title: "Demon Copperhead", author: "Barbara Kingsolver", coverTone: "bg-[#66503D]" },
+    { title: "Piranesi", author: "Susanna Clarke", coverTone: "bg-[#4C5D52]" },
+    { title: "Open Water", author: "Caleb Azumah Nelson", coverTone: "bg-[#6B5361]" },
+  ];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
+      <TopNav />
+      <main className="flex min-h-[982px] w-full flex-col gap-[17px]">
+        <section className="flex w-full flex-col gap-[17px] pl-6">
+          <div className="flex items-center justify-start gap-[10px] p-[10px]">
+            <h1 className="font-shippori-mincho text-[40px] leading-[1.448em] font-normal text-black">
+              My Bookshelf
+            </h1>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <Tabs activeIndex={0} items={tabItems} />
+
+            <div className="flex flex-col gap-9 pl-3">
+              <div className="w-full overflow-x-auto overflow-y-hidden pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <BookCarousel books={books} />
+              </div>
+              <div className="w-full overflow-x-auto overflow-y-hidden pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <BookCarousel books={booksRowTwo} />
+              </div>
+              <div className="w-full overflow-x-auto overflow-y-hidden pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+                <BookCarousel books={booksRowThree} />
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   );
