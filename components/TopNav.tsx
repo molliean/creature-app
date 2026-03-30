@@ -15,7 +15,7 @@ const defaultLinks: NavItem[] = [
   { label: "My Shelf", href: "/" },
   { label: "Explore", href: "/explore" },
   { label: "Shop", href: "#" },
-  { label: "Stats", href: "#" },
+  { label: "Stats", href: "/stats" },
 ];
 
 export function TopNav({
