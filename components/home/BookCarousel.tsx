@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { CoverImage } from "@/components/CoverImage";
 
 type BookItem = {
   slug: string;
@@ -7,6 +7,7 @@ type BookItem = {
   author: string;
   coverTone: string;
   coverUrl?: string;
+  coverFallbackUrl?: string;
 };
 
 type BookCarouselProps = {
@@ -19,20 +20,23 @@ export function BookCarousel({ books }: BookCarouselProps) {
       {books.map((book) => (
         <article key={book.title} className="flex flex-col gap-[10px] p-[10px]">
           <Link href={`/book/${book.slug}`} className="block">
-            <div className={`h-[435px] w-[290px] border border-black ${book.coverUrl ? "" : book.coverTone} relative overflow-hidden`}>
+            <div
+              className={`h-[435px] w-[290px] border border-black relative overflow-hidden ${book.coverUrl ? "" : book.coverTone}`}
+            >
               {book.coverUrl ? (
-                <Image
+                <CoverImage
                   src={book.coverUrl}
+                  fallbackSrc={book.coverFallbackUrl}
                   alt={`Cover of ${book.title}`}
-                  fill
-                  style={{ objectFit: "cover" }}
                   sizes="290px"
+                  placeholderTitle={book.title}
+                  placeholderAuthor={book.author}
                 />
               ) : (
                 <>
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
-                  <div className="absolute bottom-2 left-2 right-2 text-[12px] text-white/90">
-                    Placeholder cover
+                  <div className="absolute bottom-2 left-2 right-2 font-ligconsolata text-[12px] text-white/90">
+                    {book.title}
                   </div>
                 </>
               )}

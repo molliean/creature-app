@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const SUGGESTION_CHIPS = [
   "Books with unreliable narrators",
@@ -15,6 +16,7 @@ const SUGGESTION_CHIPS = [
 
 export function ExplorePrompt() {
   const [value, setValue] = useState("");
+  const router = useRouter();
 
   function handleChipClick(chip: string) {
     setValue(chip);
@@ -22,7 +24,10 @@ export function ExplorePrompt() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // API call wired up later
+    const q = value.trim();
+    if (q) {
+      router.push(`/explore/results?q=${encodeURIComponent(q)}`);
+    }
   }
 
   return (
@@ -34,6 +39,12 @@ export function ExplorePrompt() {
             placeholder="A sweeping historical novel set in 1920s Paris..."
             value={value}
             onChange={(e) => setValue(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(e as unknown as React.FormEvent);
+              }
+            }}
           />
           <button
             type="submit"

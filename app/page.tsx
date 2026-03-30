@@ -2,31 +2,46 @@ import { TopNav } from "@/components/TopNav";
 import { BookCarousel } from "@/components/home/BookCarousel";
 import { Tabs } from "@/components/home/Tabs";
 import { BOOKS } from "@/lib/books";
+import { getCoverUrlByIsbn } from "@/lib/googleBooks";
 
-export default function Home() {
+export default async function Home() {
   const tabItems = [
     { label: "All", count: 110 },
     { label: "Currently reading", count: 4 },
     { label: "Want to read", count: 28 },
     { label: "Finished", count: 71 },
-    { label: "Didn’t finish", count: 8 },
+    { label: "Didn't finish", count: 8 },
     { label: "Favorites", count: 12 },
   ];
 
   const ol = (title: string) =>
     `https://covers.openlibrary.org/b/title/${encodeURIComponent(title)}-L.jpg`;
 
-  const toCarouselBook = (b: (typeof BOOKS)[0]) => ({
-    slug: b.slug,
-    title: b.title,
-    author: b.author,
-    coverTone: b.coverTone,
-    coverUrl: b.localCover ?? ol(b.title),
-  });
+  // Fetch Google Books covers for all books in parallel
+  const displayBooks = BOOKS.slice(0, 18);
+  const googleCovers = await Promise.all(
+    displayBooks.map((b) =>
+      b.localCover
+        ? Promise.resolve(undefined)
+        : getCoverUrlByIsbn(b.isbn, { title: b.title, author: b.author })
+    )
+  );
 
-  const books = BOOKS.slice(0, 6).map(toCarouselBook);
-  const booksRowTwo = BOOKS.slice(6, 12).map(toCarouselBook);
-  const booksRowThree = BOOKS.slice(12, 18).map(toCarouselBook);
+  const toCarouselBook = (b: (typeof BOOKS)[0], i: number) => {
+    const gc = googleCovers[i];
+    return {
+      slug: b.slug,
+      title: b.title,
+      author: b.author,
+      coverTone: b.coverTone,
+      coverUrl: b.localCover ?? gc?.primary ?? ol(b.title),
+      coverFallbackUrl: gc?.fallback,
+    };
+  };
+
+  const books      = displayBooks.slice(0,  6).map((b, i) => toCarouselBook(b, i));
+  const booksRowTwo   = displayBooks.slice(6, 12).map((b, i) => toCarouselBook(b, i + 6));
+  const booksRowThree = displayBooks.slice(12, 18).map((b, i) => toCarouselBook(b, i + 12));
 
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
