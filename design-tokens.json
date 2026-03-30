@@ -1,0 +1,700 @@
+{
+  "meta": {
+    "source": "https://www.figma.com/design/58i3A5rml54rTcRGa5QyP6/CB-APP",
+    "fetched": "2026-03-30",
+    "fileName": "CB APP",
+    "lastModified": "2026-03-30T17:13:39Z"
+  },
+  "colors": {
+    "#CBDEE1": {
+      "alpha": 1.0,
+      "uses": [
+        {
+          "path": "App screens/search bar/search bar content",
+          "type": "FRAME"
+        },
+        {
+          "path": "App screens/C w/ pool logo/Ellipse 4",
+          "type": "VECTOR"
+        },
+        {
+          "path": "App screens/Creature w/ pool logo/Ellipse 4",
+          "type": "VECTOR"
+        }
+      ]
+    },
+    "#000000": {
+      "alpha": 1.0,
+      "uses": [
+        {
+          "path": "App screens/search bar/search bar content [stroke]",
+          "type": "FRAME"
+        },
+        {
+          "path": "App screens/search bar/search bar content/search bar content/Interface / Search_Magnifying_Glass/Vector [stroke]",
+          "type": "VECTOR"
+        },
+        {
+          "path": "App screens/User / User_Circle/Vector [stroke]",
+          "type": "VECTOR"
+        }
+      ]
+    },
+    "#494949": {
+      "alpha": 1.0,
+      "uses": [
+        {
+          "path": "App screens/search bar/search bar content/search bar content/Search titles...",
+          "type": "TEXT"
+        },
+        {
+          "path": "App screens/Nav bar/search bar/search bar content/search bar content/Search titles...",
+          "type": "TEXT"
+        }
+      ]
+    },
+    "#D79E2D": {
+      "alpha": 1.0,
+      "uses": [
+        {
+          "path": "App screens/C w/ pool logo/Ellipse 4 [stroke]",
+          "type": "VECTOR"
+        },
+        {
+          "path": "App screens/Creature w/ pool logo/Ellipse 4 [stroke]",
+          "type": "VECTOR"
+        },
+        {
+          "path": "App screens/action buttons/Button",
+          "type": "INSTANCE"
+        }
+      ]
+    },
+    "#F79E1B": {
+      "alpha": 1.0,
+      "uses": [
+        {
+          "path": "App screens/C w/ pool logo/C",
+          "type": "TEXT"
+        },
+        {
+          "path": "App screens/C logo/C",
+          "type": "TEXT"
+        },
+        {
+          "path": "App screens/Creature w/ pool logo/CREATURE",
+          "type": "TEXT"
+        }
+      ]
+    },
+    "#FFFFFF": {
+      "alpha": 1.0,
+      "uses": [
+        {
+          "path": "App screens/C logo",
+          "type": "COMPONENT"
+        },
+        {
+          "path": "App screens/Creature w/ pool logo",
+          "type": "COMPONENT"
+        },
+        {
+          "path": "App screens/HOME SCREEN/home screen content/Nav bar/left side nav/C logo",
+          "type": "INSTANCE"
+        }
+      ]
+    },
+    "#676767": {
+      "alpha": 1.0,
+      "uses": [
+        {
+          "path": "App screens/Tabs/all tabs/unselected tabs/Currently reading (4)",
+          "type": "TEXT"
+        },
+        {
+          "path": "App screens/Tabs/all tabs/unselected tabs/Want to read (28)",
+          "type": "TEXT"
+        },
+        {
+          "path": "App screens/Tabs/all tabs/unselected tabs/Finished (71)",
+          "type": "TEXT"
+        }
+      ]
+    },
+    "#8F8D8D": {
+      "alpha": 1.0,
+      "uses": [
+        {
+          "path": "App screens/EXPLORE SCREEN/Explore page body/Input field/A sweeping historical novel set in 1920s Paris...",
+          "type": "TEXT"
+        }
+      ]
+    },
+    "#979797": {
+      "alpha": 1.0,
+      "uses": [
+        {
+          "path": "App screens/action buttons/Button [stroke]",
+          "type": "INSTANCE"
+        },
+        {
+          "path": "App screens/action buttons/Button [stroke]",
+          "type": "INSTANCE"
+        },
+        {
+          "path": "App screens/action buttons/Button [stroke]",
+          "type": "INSTANCE"
+        }
+      ]
+    }
+  },
+  "gradients": [
+    {
+      "type": "GRADIENT_LINEAR",
+      "stops": [
+        {
+          "position": 0.0,
+          "color": "rgba(114, 226, 189, 0.85)",
+          "hex": "#72E2BD"
+        },
+        {
+          "position": 0.481,
+          "color": "rgba(219, 165, 252, 0.67)",
+          "hex": "#DBA5FC"
+        },
+        {
+          "position": 0.88,
+          "color": "rgba(255, 197, 247, 0.73)",
+          "hex": "#FFC5F7"
+        }
+      ],
+      "usedIn": "App screens/EXPLORE SCREEN/Explore page body/Input field"
+    },
+    {
+      "type": "GRADIENT_LINEAR",
+      "stops": [
+        {
+          "position": 0.0,
+          "color": "rgba(114, 226, 189, 0.85)",
+          "hex": "#72E2BD"
+        },
+        {
+          "position": 0.481,
+          "color": "rgba(219, 165, 252, 0.67)",
+          "hex": "#DBA5FC"
+        },
+        {
+          "position": 0.88,
+          "color": "rgba(255, 197, 247, 0.73)",
+          "hex": "#FFC5F7"
+        }
+      ],
+      "usedIn": "App screens/SEARCH RESULTS SCREEN/search results screen body/Input field - edit"
+    }
+  ],
+  "typography": {
+    "Ligconsolata/14.0/400": {
+      "fontFamily": "Ligconsolata",
+      "fontSize": 14.0,
+      "fontWeight": 400,
+      "lineHeightPx": 14.69,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "Didn\u2019t finish",
+      "usedIn": "App screens/action buttons/Button/Button"
+    },
+    "Ligconsolata/20.0/700": {
+      "fontFamily": "Ligconsolata",
+      "fontSize": 20.0,
+      "fontWeight": 700,
+      "lineHeightPx": 20.98,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "Button",
+      "usedIn": "App screens/Button/Button"
+    },
+    "Rubik Beastly/40.0/400": {
+      "fontFamily": "Rubik Beastly",
+      "fontSize": 40.0,
+      "fontWeight": 400,
+      "lineHeightPx": 47.4,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "C",
+      "usedIn": "App screens/SEARCH RESULTS SCREEN/Nav bar/Frame 63/C logo/C"
+    },
+    "Shippori Mincho/64.0/400": {
+      "fontFamily": "Shippori Mincho",
+      "fontSize": 64.0,
+      "fontWeight": 400,
+      "lineHeightPx": 92.67,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "Reading stats",
+      "usedIn": "App screens/STATS SCREEN/Stats screen body/Stats screen header"
+    },
+    "Shippori Mincho/40.0/400": {
+      "fontFamily": "Shippori Mincho",
+      "fontSize": 40.0,
+      "fontWeight": 400,
+      "lineHeightPx": 57.92,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "My Shelf",
+      "usedIn": "App screens/body heading/My Shelf"
+    },
+    "Ligconsolata/20.0/400": {
+      "fontFamily": "Ligconsolata",
+      "fontSize": 20.0,
+      "fontWeight": 400,
+      "lineHeightPx": 20.98,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "Skylight Books",
+      "usedIn": "App screens/Card/card info section/card info/Skylight Books"
+    },
+    "Ligconsolata/16.0/400": {
+      "fontFamily": "Ligconsolata",
+      "fontSize": 16.0,
+      "fontWeight": 400,
+      "lineHeightPx": 16.78,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "Finished",
+      "usedIn": "App screens/Stat card/stat card content/Finished"
+    },
+    "Ligconsolata/32.0/400": {
+      "fontFamily": "Ligconsolata",
+      "fontSize": 32.0,
+      "fontWeight": 400,
+      "lineHeightPx": 33.57,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": -0.64,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "Describe the kind of book you\u2019re in the mood for.",
+      "usedIn": "App screens/EXPLORE SCREEN/Explore page body/AI Prompt text/AI sub prompt/Describe the kind of book you\u2019re in the mood for."
+    },
+    "Ligconsolata/24.0/400": {
+      "fontFamily": "Ligconsolata",
+      "fontSize": 24.0,
+      "fontWeight": 400,
+      "lineHeightPx": 25.18,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "25 results",
+      "usedIn": "App screens/SEARCH RESULTS SCREEN/search results screen body/25 results"
+    },
+    "Ligconsolata/64.0/700": {
+      "fontFamily": "Ligconsolata",
+      "fontSize": 64.0,
+      "fontWeight": 700,
+      "lineHeightPx": 67.14,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "9",
+      "usedIn": "App screens/Stat card/stat card content/Number/9"
+    },
+    "Ligconsolata/40.0/700": {
+      "fontFamily": "Ligconsolata",
+      "fontSize": 40.0,
+      "fontWeight": 700,
+      "lineHeightPx": 41.96,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "Martyr!",
+      "usedIn": "App screens/book card/right side/right side content/title, author, year, publisher/Martyr!"
+    },
+    "Ligconsolata/36.0/400": {
+      "fontFamily": "Ligconsolata",
+      "fontSize": 36.0,
+      "fontWeight": 400,
+      "lineHeightPx": 37.76,
+      "lineHeightPercent": 100.0,
+      "letterSpacing": 0.0,
+      "textAlignHorizontal": "LEFT",
+      "exampleText": "2025, Knopf",
+      "usedIn": "App screens/book card/right side/right side content/title, author, year, publisher/2025, Knopf"
+    }
+  },
+  "spacing": [
+    3.0,
+    4.0,
+    7.0,
+    8.0,
+    10.0,
+    11.0,
+    12.0,
+    13.0,
+    15.0,
+    16.0,
+    17.0,
+    20.0,
+    24.0,
+    27.0,
+    30.0,
+    32.0,
+    36.0,
+    39.0,
+    40.0,
+    42.0,
+    46.0,
+    47.0,
+    48.0,
+    50.0,
+    51.0,
+    54.0,
+    56.0,
+    57.0,
+    59.0,
+    65.0,
+    73.0,
+    88.0,
+    95.0,
+    166.0,
+    334.0,
+    370.0
+  ],
+  "borderRadius": [
+    7.0,
+    10.0,
+    13.0
+  ],
+  "borderWidths": [
+    1.0,
+    2.0
+  ],
+  "componentSpecs": {
+    "search bar": {
+      "id": "3:433",
+      "type": "COMPONENT",
+      "width": 259,
+      "height": 41,
+      "layoutMode": "HORIZONTAL",
+      "itemSpacing": 20.0
+    },
+    "User / User_Circle": {
+      "id": "2:127",
+      "type": "COMPONENT",
+      "width": 39,
+      "height": 39
+    },
+    "Interface / Shopping_Bag_01": {
+      "id": "2:125",
+      "type": "COMPONENT",
+      "width": 43,
+      "height": 43
+    },
+    "Button": {
+      "id": "18:348",
+      "type": "COMPONENT",
+      "width": 92,
+      "height": 37,
+      "layoutMode": "HORIZONTAL",
+      "paddingLeft": 16.0,
+      "paddingRight": 16.0,
+      "paddingTop": 8.0,
+      "paddingBottom": 8.0,
+      "itemSpacing": 10.0,
+      "cornerRadius": 13.0
+    },
+    "C w/ pool logo": {
+      "id": "2:397",
+      "type": "COMPONENT",
+      "width": 108,
+      "height": 74
+    },
+    "C logo": {
+      "id": "2:396",
+      "type": "COMPONENT",
+      "width": 30,
+      "height": 47,
+      "fillColor": "#FFFFFF",
+      "fillAlpha": 1.0
+    },
+    "Creature w/ pool logo": {
+      "id": "2:399",
+      "type": "COMPONENT",
+      "width": 269,
+      "height": 185,
+      "fillColor": "#FFFFFF",
+      "fillAlpha": 1.0
+    },
+    "HOME SCREEN": {
+      "id": "2:402",
+      "type": "FRAME",
+      "width": 1512,
+      "height": 982,
+      "layoutMode": "VERTICAL",
+      "itemSpacing": 17.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "body heading": {
+      "id": "5:79",
+      "type": "COMPONENT",
+      "width": 193,
+      "height": 78,
+      "layoutMode": "HORIZONTAL",
+      "paddingLeft": 10.0,
+      "paddingRight": 10.0,
+      "paddingTop": 10.0,
+      "paddingBottom": 10.0,
+      "itemSpacing": 10.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "book carousel": {
+      "id": "2:411",
+      "type": "COMPONENT",
+      "width": 1694,
+      "height": 392,
+      "layoutMode": "HORIZONTAL",
+      "itemSpacing": 16.0
+    },
+    "Nav bar": {
+      "id": "3:440",
+      "type": "COMPONENT",
+      "width": 1512,
+      "height": 67,
+      "layoutMode": "HORIZONTAL",
+      "paddingLeft": 32.0,
+      "paddingRight": 32.0,
+      "paddingTop": 10.0,
+      "paddingBottom": 10.0,
+      "itemSpacing": 10.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "Tabs": {
+      "id": "5:154",
+      "type": "COMPONENT",
+      "width": 1512,
+      "height": 40,
+      "layoutMode": "HORIZONTAL",
+      "paddingLeft": 10.0,
+      "paddingRight": 10.0,
+      "paddingTop": 10.0,
+      "paddingBottom": 10.0,
+      "itemSpacing": 32.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "EXPLORE SCREEN": {
+      "id": "8:236",
+      "type": "FRAME",
+      "width": 1512,
+      "height": 982,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "Arrow": {
+      "id": "8:272",
+      "type": "COMPONENT",
+      "width": 34,
+      "height": 32,
+      "layoutMode": "VERTICAL",
+      "paddingLeft": 10.0,
+      "paddingRight": 10.0,
+      "paddingTop": 16.0,
+      "paddingBottom": 16.0,
+      "itemSpacing": 10.0,
+      "cornerRadius": 7.0
+    },
+    "SHOP SCREEN": {
+      "id": "10:282",
+      "type": "FRAME",
+      "width": 1512,
+      "height": 982,
+      "layoutMode": "VERTICAL",
+      "itemSpacing": 65.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "BOOK DETAIL SCREEN": {
+      "id": "10:283",
+      "type": "FRAME",
+      "width": 1512,
+      "height": 982,
+      "layoutMode": "VERTICAL",
+      "paddingBottom": 73.0,
+      "itemSpacing": 48.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "action buttons": {
+      "id": "25:399",
+      "type": "COMPONENT",
+      "width": 408,
+      "height": 31,
+      "layoutMode": "HORIZONTAL",
+      "itemSpacing": 11.0
+    },
+    "STATS SCREEN": {
+      "id": "10:284",
+      "type": "FRAME",
+      "width": 1512,
+      "height": 1222,
+      "layoutMode": "VERTICAL",
+      "paddingRight": 24.0,
+      "paddingBottom": 59.0,
+      "itemSpacing": 47.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "SEARCH RESULTS SCREEN": {
+      "id": "10:285",
+      "type": "FRAME",
+      "width": 1512,
+      "height": 1733,
+      "layoutMode": "VERTICAL",
+      "paddingBottom": 334.0,
+      "itemSpacing": 24.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "Card grid": {
+      "id": "11:211",
+      "type": "COMPONENT",
+      "width": 1330,
+      "height": 880,
+      "layoutMode": "GRID",
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "Card": {
+      "id": "11:83",
+      "type": "COMPONENT",
+      "width": 430,
+      "height": 430,
+      "layoutMode": "VERTICAL",
+      "fillColor": "#FFFFFF",
+      "fillAlpha": 1.0
+    },
+    "Stat card": {
+      "id": "13:347",
+      "type": "COMPONENT",
+      "width": 160,
+      "height": 149,
+      "layoutMode": "VERTICAL",
+      "paddingLeft": 10.0,
+      "paddingRight": 10.0,
+      "paddingTop": 10.0,
+      "paddingBottom": 10.0,
+      "itemSpacing": 10.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    },
+    "book card": {
+      "id": "25:411",
+      "type": "COMPONENT",
+      "width": 1009,
+      "height": 351,
+      "layoutMode": "HORIZONTAL",
+      "itemSpacing": 57.0,
+      "fillColor": "#CBDEE1",
+      "fillAlpha": 1.0
+    }
+  },
+  "registeredComponents": {
+    "search bar": {
+      "id": "3:433",
+      "description": "",
+      "key": "2f99b1e9db178a8317d1ca5ab6c65acc43b1c145"
+    },
+    "Interface / Search_Magnifying_Glass": {
+      "id": "2:123",
+      "description": "",
+      "key": "dc5a8d46a37a63559bfd7602c3f6c939dd9bddfe"
+    },
+    "User / User_Circle": {
+      "id": "2:127",
+      "description": "",
+      "key": "a326fc7f0e0c1bbcd4e15e2cf963b9eee3a2747b"
+    },
+    "Interface / Shopping_Bag_01": {
+      "id": "2:125",
+      "description": "",
+      "key": "379600755d53be4fad94a28ed9f01780efa9d444"
+    },
+    "Button": {
+      "id": "18:348",
+      "description": "",
+      "key": "0f37836befa6eeb5c0a441ab87bbcc52b3e5079b"
+    },
+    "C w/ pool logo": {
+      "id": "2:397",
+      "description": "",
+      "key": "25044e187eb8e42d8e86983d9538fca2f4e2e3a9"
+    },
+    "C logo": {
+      "id": "2:396",
+      "description": "",
+      "key": "a972619b27408834862ab9fa778163614e83b61b"
+    },
+    "Creature w/ pool logo": {
+      "id": "2:399",
+      "description": "",
+      "key": "05a62ef1e088afd99c187fbe67d465c32519c7c8"
+    },
+    "Nav bar": {
+      "id": "3:440",
+      "description": "",
+      "key": "bdaeeb2668376afc7122fb8915b93bfdbad16a4c"
+    },
+    "body heading": {
+      "id": "5:79",
+      "description": "",
+      "key": "238f6d96c73121b14647c880277cb29e07977775"
+    },
+    "Tabs": {
+      "id": "5:154",
+      "description": "",
+      "key": "b231c7a9d61e5989c3c2440938a12dfac4b98831"
+    },
+    "book carousel": {
+      "id": "2:411",
+      "description": "",
+      "key": "05009de7a2d6f0a9877cfbad1e2e7b9f37ac7afc"
+    },
+    "Arrow": {
+      "id": "8:272",
+      "description": "",
+      "key": "30f559e527014a85889846236eccc901acf2ebb9"
+    },
+    "Card grid": {
+      "id": "11:211",
+      "description": "",
+      "key": "7d805133b6c40a34e2fe4133607a67ced0e865b7"
+    },
+    "Card": {
+      "id": "11:83",
+      "description": "",
+      "key": "cac288479211742903effd42e9145644d9e62be9"
+    },
+    "action buttons": {
+      "id": "25:399",
+      "description": "",
+      "key": "059e520b0afe9618344338f48bc05f120179c079"
+    },
+    "book card": {
+      "id": "25:411",
+      "description": "",
+      "key": "a706b83ce742038388685110e214527b54c81e23"
+    },
+    "Stat card": {
+      "id": "13:347",
+      "description": "",
+      "key": "2bdd54e146104c9d38e2980a21169f6f0fca35d4"
+    }
+  }
+}
