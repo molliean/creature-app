@@ -1,6 +1,7 @@
 import { TopNav } from "@/components/TopNav";
 import { BookCarousel } from "@/components/home/BookCarousel";
 import { Tabs } from "@/components/home/Tabs";
+import { BOOKS } from "@/lib/books";
 
 export default function Home() {
   const tabItems = [
@@ -15,32 +16,17 @@ export default function Home() {
   const ol = (title: string) =>
     `https://covers.openlibrary.org/b/title/${encodeURIComponent(title)}-L.jpg`;
 
-  const books = [
-    { title: "The Night Circus", author: "Erin Morgenstern", coverTone: "bg-[#3E5868]", coverUrl: ol("The Night Circus") },
-    { title: "Klara and the Sun", author: "Kazuo Ishiguro", coverTone: "bg-[#7A5235]", coverUrl: ol("Klara and the Sun") },
-    { title: "Anna Karenina", author: "Leo Tolstoy", coverTone: "bg-[#6B3E4A]", coverUrl: ol("Anna Karenina") },
-    { title: "Pachinko", author: "Min Jin Lee", coverTone: "bg-[#2D5A52]", coverUrl: ol("Pachinko") },
-    { title: "Martyr!", author: "Kaveh Akbar", coverTone: "bg-[#495164]", coverUrl: ol("Martyr!") },
-    { title: "The Overstory", author: "Richard Powers", coverTone: "bg-[#7B5A3D]", coverUrl: ol("The Overstory") },
-  ];
+  const toCarouselBook = (b: (typeof BOOKS)[0]) => ({
+    slug: b.slug,
+    title: b.title,
+    author: b.author,
+    coverTone: b.coverTone,
+    coverUrl: ol(b.title),
+  });
 
-  const booksRowTwo = [
-    { title: "Beloved", author: "Toni Morrison", coverTone: "bg-[#734E58]", coverUrl: ol("Beloved") },
-    { title: "The Idiot", author: "Elif Batuman", coverTone: "bg-[#5B6A82]", coverUrl: ol("The Idiot") },
-    { title: "A Little Life", author: "Hanya Yanagihara", coverTone: "bg-[#6B5A46]", coverUrl: ol("A Little Life") },
-    { title: "The Goldfinch", author: "Donna Tartt", coverTone: "bg-[#566B4B]", coverUrl: ol("The Goldfinch") },
-    { title: "Outline", author: "Rachel Cusk", coverTone: "bg-[#48596A]", coverUrl: ol("Outline") },
-    { title: "Real Life", author: "Brandon Taylor", coverTone: "bg-[#6F4F41]", coverUrl: ol("Real Life") },
-  ];
-
-  const booksRowThree = [
-    { title: "Trust", author: "Hernan Diaz", coverTone: "bg-[#50646B]", coverUrl: ol("Trust") },
-    { title: "The Bee Sting", author: "Paul Murray", coverTone: "bg-[#6A5D49]", coverUrl: ol("The Bee Sting") },
-    { title: "Normal People", author: "Sally Rooney", coverTone: "bg-[#4A6071]", coverUrl: ol("Normal People") },
-    { title: "Demon Copperhead", author: "Barbara Kingsolver", coverTone: "bg-[#66503D]", coverUrl: ol("Demon Copperhead") },
-    { title: "Piranesi", author: "Susanna Clarke", coverTone: "bg-[#4C5D52]", coverUrl: ol("Piranesi") },
-    { title: "Open Water", author: "Caleb Azumah Nelson", coverTone: "bg-[#6B5361]", coverUrl: ol("Open Water") },
-  ];
+  const books = BOOKS.slice(0, 6).map(toCarouselBook);
+  const booksRowTwo = BOOKS.slice(6, 12).map(toCarouselBook);
+  const booksRowThree = BOOKS.slice(12, 18).map(toCarouselBook);
 
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
