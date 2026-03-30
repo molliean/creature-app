@@ -21,7 +21,7 @@ export default async function BookDetailPage({
 
   if (!book) notFound();
 
-  const coverUrl = `https://covers.openlibrary.org/b/title/${encodeURIComponent(book.title)}-L.jpg`;
+  const coverUrl = book.localCover ?? `https://covers.openlibrary.org/b/title/${encodeURIComponent(book.title)}-L.jpg`;
   const shopUrl = `https://bookshop.org/a/${AFFILIATE_ID}/${book.isbn}`;
 
   return (
@@ -91,7 +91,7 @@ export default async function BookDetailPage({
           </div>
 
           {/* Book description */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 pr-24">
             <h2 className="font-shippori-mincho text-[22px] leading-[1.3em] font-normal text-black">
               About this book
             </h2>
@@ -101,7 +101,7 @@ export default async function BookDetailPage({
           </div>
 
           {/* Author info */}
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 pr-24">
             <h2 className="font-shippori-mincho text-[22px] leading-[1.3em] font-normal text-black">
               About the author
             </h2>

@@ -7,6 +7,7 @@ export type Book = {
   genres: string[];
   isbn: string;
   coverTone: string;
+  localCover?: string;
   synopsis?: string;
   readingStatus?: {
     status: "finished" | "reading" | "want" | "dnf";
@@ -24,6 +25,7 @@ export const BOOKS: Book[] = [
     genres: ["Classic", "Literary fiction"],
     isbn: "9780143035008",
     coverTone: "bg-[#6B3E4A]",
+    localCover: "/9781454959595.jpg",
     synopsis:
       "Acclaimed by many as the world's greatest novel, Anna Karenina provides a vivid portrait of Russian society in the nineteenth century, and a story of love and loss that has never been surpassed.",
     readingStatus: { status: "finished", date: "March 15" },

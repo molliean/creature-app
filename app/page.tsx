@@ -21,7 +21,7 @@ export default function Home() {
     title: b.title,
     author: b.author,
     coverTone: b.coverTone,
-    coverUrl: ol(b.title),
+    coverUrl: b.localCover ?? ol(b.title),
   });
 
   const books = BOOKS.slice(0, 6).map(toCarouselBook);
