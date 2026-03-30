@@ -12,31 +12,34 @@ export default function Home() {
     { label: "Favorites", count: 12 },
   ];
 
+  const ol = (title: string) =>
+    `https://covers.openlibrary.org/b/title/${encodeURIComponent(title)}-L.jpg`;
+
   const books = [
-    { title: "The Night Circus", author: "Erin Morgenstern", coverTone: "bg-[#3E5868]" },
-    { title: "Klara and the Sun", author: "Kazuo Ishiguro", coverTone: "bg-[#7A5235]" },
-    { title: "Anna Karenina", author: "Leo Tolstoy", coverTone: "bg-[#6B3E4A]" },
-    { title: "Pachinko", author: "Min Jin Lee", coverTone: "bg-[#2D5A52]" },
-    { title: "Martyr!", author: "Kaveh Akbar", coverTone: "bg-[#495164]" },
-    { title: "The Overstory", author: "Richard Powers", coverTone: "bg-[#7B5A3D]" },
+    { title: "The Night Circus", author: "Erin Morgenstern", coverTone: "bg-[#3E5868]", coverUrl: ol("The Night Circus") },
+    { title: "Klara and the Sun", author: "Kazuo Ishiguro", coverTone: "bg-[#7A5235]", coverUrl: ol("Klara and the Sun") },
+    { title: "Anna Karenina", author: "Leo Tolstoy", coverTone: "bg-[#6B3E4A]", coverUrl: ol("Anna Karenina") },
+    { title: "Pachinko", author: "Min Jin Lee", coverTone: "bg-[#2D5A52]", coverUrl: ol("Pachinko") },
+    { title: "Martyr!", author: "Kaveh Akbar", coverTone: "bg-[#495164]", coverUrl: ol("Martyr!") },
+    { title: "The Overstory", author: "Richard Powers", coverTone: "bg-[#7B5A3D]", coverUrl: ol("The Overstory") },
   ];
 
   const booksRowTwo = [
-    { title: "Beloved", author: "Toni Morrison", coverTone: "bg-[#734E58]" },
-    { title: "The Idiot", author: "Elif Batuman", coverTone: "bg-[#5B6A82]" },
-    { title: "A Little Life", author: "Hanya Yanagihara", coverTone: "bg-[#6B5A46]" },
-    { title: "The Goldfinch", author: "Donna Tartt", coverTone: "bg-[#566B4B]" },
-    { title: "Outline", author: "Rachel Cusk", coverTone: "bg-[#48596A]" },
-    { title: "Real Life", author: "Brandon Taylor", coverTone: "bg-[#6F4F41]" },
+    { title: "Beloved", author: "Toni Morrison", coverTone: "bg-[#734E58]", coverUrl: ol("Beloved") },
+    { title: "The Idiot", author: "Elif Batuman", coverTone: "bg-[#5B6A82]", coverUrl: ol("The Idiot") },
+    { title: "A Little Life", author: "Hanya Yanagihara", coverTone: "bg-[#6B5A46]", coverUrl: ol("A Little Life") },
+    { title: "The Goldfinch", author: "Donna Tartt", coverTone: "bg-[#566B4B]", coverUrl: ol("The Goldfinch") },
+    { title: "Outline", author: "Rachel Cusk", coverTone: "bg-[#48596A]", coverUrl: ol("Outline") },
+    { title: "Real Life", author: "Brandon Taylor", coverTone: "bg-[#6F4F41]", coverUrl: ol("Real Life") },
   ];
 
   const booksRowThree = [
-    { title: "Trust", author: "Hernan Diaz", coverTone: "bg-[#50646B]" },
-    { title: "The Bee Sting", author: "Paul Murray", coverTone: "bg-[#6A5D49]" },
-    { title: "Normal People", author: "Sally Rooney", coverTone: "bg-[#4A6071]" },
-    { title: "Demon Copperhead", author: "Barbara Kingsolver", coverTone: "bg-[#66503D]" },
-    { title: "Piranesi", author: "Susanna Clarke", coverTone: "bg-[#4C5D52]" },
-    { title: "Open Water", author: "Caleb Azumah Nelson", coverTone: "bg-[#6B5361]" },
+    { title: "Trust", author: "Hernan Diaz", coverTone: "bg-[#50646B]", coverUrl: ol("Trust") },
+    { title: "The Bee Sting", author: "Paul Murray", coverTone: "bg-[#6A5D49]", coverUrl: ol("The Bee Sting") },
+    { title: "Normal People", author: "Sally Rooney", coverTone: "bg-[#4A6071]", coverUrl: ol("Normal People") },
+    { title: "Demon Copperhead", author: "Barbara Kingsolver", coverTone: "bg-[#66503D]", coverUrl: ol("Demon Copperhead") },
+    { title: "Piranesi", author: "Susanna Clarke", coverTone: "bg-[#4C5D52]", coverUrl: ol("Piranesi") },
+    { title: "Open Water", author: "Caleb Azumah Nelson", coverTone: "bg-[#6B5361]", coverUrl: ol("Open Water") },
   ];
 
   return (
