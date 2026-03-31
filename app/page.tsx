@@ -35,7 +35,8 @@ export default async function Home() {
       author: b.author,
       coverTone: b.coverTone,
       coverUrl: b.localCover ?? gc?.primary ?? ol(b.title),
-      coverFallbackUrl: gc?.fallback,
+      coverFallbackUrl: b.localCover ? undefined : gc?.fallback,
+      coverLastResortUrl: b.localCover ? undefined : gc?.lastResort,
     };
   };
 

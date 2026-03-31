@@ -1,15 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type CoverImageProps = {
   src: string;
   fallbackSrc?: string;
+  lastResortSrc?: string;
   alt: string;
   sizes: string;
   priority?: boolean;
-  /** Shown in the placeholder if both src and fallbackSrc fail. */
+  /** Shown in the placeholder if all sources fail. */
   placeholderTitle?: string;
   placeholderAuthor?: string;
 };
@@ -17,6 +18,7 @@ type CoverImageProps = {
 export function CoverImage({
   src,
   fallbackSrc,
+  lastResortSrc,
   alt,
   sizes,
   priority,
@@ -25,6 +27,8 @@ export function CoverImage({
 }: CoverImageProps) {
   const [imgSrc, setImgSrc] = useState(src);
   const [failed, setFailed] = useState(false);
+  // Keep track of which sources we've already tried so we advance through the chain correctly
+  const tried = useRef(new Set<string>());
 
   if (failed) {
     return (
@@ -52,8 +56,12 @@ export function CoverImage({
       sizes={sizes}
       priority={priority}
       onError={() => {
-        if (fallbackSrc && imgSrc !== fallbackSrc) {
-          setImgSrc(fallbackSrc);
+        tried.current.add(imgSrc);
+        const next = [fallbackSrc, lastResortSrc].find(
+          (s) => s && !tried.current.has(s)
+        );
+        if (next) {
+          setImgSrc(next);
         } else {
           setFailed(true);
         }

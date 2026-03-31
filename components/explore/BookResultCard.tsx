@@ -11,6 +11,7 @@ export type BookResult = {
   genres: string[];
   coverUrl?: string;
   coverFallbackUrl?: string;
+  coverLastResortUrl?: string;
 };
 
 export function BookResultCard({ book }: { book: BookResult }) {
@@ -30,6 +31,7 @@ export function BookResultCard({ book }: { book: BookResult }) {
             <CoverImage
               src={book.coverUrl}
               fallbackSrc={book.coverFallbackUrl}
+              lastResortSrc={book.coverLastResortUrl}
               alt={`Cover of ${book.title}`}
               sizes="160px"
               placeholderTitle={book.title}

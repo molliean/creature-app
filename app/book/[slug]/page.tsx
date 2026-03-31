@@ -40,14 +40,19 @@ export default async function BookDetailPage({
   const description = googleBook?.description ?? staticBook?.synopsis;
   const readingStatus = staticBook?.readingStatus ?? null;
 
+  // Cover chain: local file → OL large (from isbn) → OL medium → Google Books
   const coverUrl =
     staticBook?.localCover ??
-    googleBook?.coverUrl ??
-    (staticBook
-      ? `https://covers.openlibrary.org/b/title/${encodeURIComponent(staticBook.title)}-L.jpg`
-      : undefined);
+    (isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg` : undefined) ??
+    googleBook?.coverUrl;
 
-  const coverFallbackUrl = staticBook?.localCover ? undefined : googleBook?.coverFallbackUrl;
+  const coverFallbackUrl = staticBook?.localCover
+    ? undefined
+    : isbn
+    ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`
+    : undefined;
+
+  const coverLastResortUrl = staticBook?.localCover ? undefined : googleBook?.coverLastResortUrl;
 
   const shopUrl = isbn ? `https://bookshop.org/a/${AFFILIATE_ID}/${isbn}` : null;
 
@@ -65,6 +70,7 @@ export default async function BookDetailPage({
             <CoverImage
               src={coverUrl}
               fallbackSrc={coverFallbackUrl}
+              lastResortSrc={coverLastResortUrl}
               alt={`Cover of ${title}`}
               sizes="33vw"
               priority

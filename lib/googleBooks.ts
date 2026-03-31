@@ -9,10 +9,12 @@ export type GoogleBook = {
   pageCount?: number;
   categories?: string[];
   description?: string;
-  /** High-res cover via fife=w600 (may be served from googleusercontent.com). */
+  /** Open Library large cover (primary). Real 404 when missing — onError fires correctly. */
   coverUrl?: string;
-  /** Standard zoom=1 thumbnail from books.google.com — reliable fallback. */
+  /** Open Library medium cover (first fallback). */
   coverFallbackUrl?: string;
+  /** Google Books fife cover (last resort). */
+  coverLastResortUrl?: string;
   isbn?: string;
 };
 
@@ -27,17 +29,16 @@ function buildUrl(path: string, params: Record<string, string> = {}): string {
   return `${BASE_URL}${path}${qs ? `?${qs}` : ""}`;
 }
 
-/** High-res cover URL (600px wide) from Google's image-serving CDN. */
-function primaryCoverUrl(volumeId: string): string {
+function olCoverUrl(isbn: string, size: "L" | "M" | "S"): string {
+  return `https://covers.openlibrary.org/b/isbn/${isbn}-${size}.jpg`;
+}
+
+/** Google Books high-res cover — used only as last resort. */
+function googleCoverUrl(volumeId: string): string {
   return `https://books.google.com/books/content?id=${volumeId}&printsec=frontcover&img=1&fife=w600`;
 }
 
-/** Standard thumbnail from books.google.com — lower-res but very reliable. */
-function fallbackCoverUrl(volumeId: string): string {
-  return `https://books.google.com/books/content?id=${volumeId}&printsec=frontcover&img=1&zoom=1`;
-}
-
-/** Returns true if `returned` looks like it matches `expected` (case-insensitive, ignores punctuation). */
+/** Returns true if `returned` roughly matches `expected` (case-insensitive, ignores punctuation). */
 function titlesMatch(returned: string, expected: string): boolean {
   const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9\s]/g, "").trim();
   const a = normalize(returned);
@@ -72,6 +73,12 @@ function volumeToGoogleBook(volume: VolumeRaw): GoogleBook {
   const yearRaw = info.publishedDate ? parseInt(info.publishedDate.slice(0, 4), 10) : NaN;
   const year = isNaN(yearRaw) ? undefined : yearRaw;
 
+  // Cover priority: OL Large → OL Medium → Google Books fife
+  // Open Library returns a real 404 for missing covers so onError fires correctly.
+  const coverUrl = isbn ? olCoverUrl(isbn, "L") : hasCover ? googleCoverUrl(volume.id) : undefined;
+  const coverFallbackUrl = isbn ? olCoverUrl(isbn, "M") : undefined;
+  const coverLastResortUrl = isbn && hasCover ? googleCoverUrl(volume.id) : undefined;
+
   return {
     id: volume.id,
     title: info.title ?? "Unknown Title",
@@ -81,8 +88,9 @@ function volumeToGoogleBook(volume: VolumeRaw): GoogleBook {
     pageCount: info.pageCount,
     categories: info.categories,
     description: info.description,
-    coverUrl: hasCover ? primaryCoverUrl(volume.id) : undefined,
-    coverFallbackUrl: hasCover ? fallbackCoverUrl(volume.id) : undefined,
+    coverUrl,
+    coverFallbackUrl,
+    coverLastResortUrl,
     isbn,
   };
 }
@@ -116,59 +124,48 @@ export async function getBookById(id: string): Promise<GoogleBook | null> {
   return volumeToGoogleBook(data as VolumeRaw);
 }
 
-export type CoverUrls = { primary: string; fallback: string };
+export type CoverUrls = { primary: string; fallback: string; lastResort?: string };
 
 /**
- * Fetch cover URLs for a book, validated against the expected title.
+ * Build cover URLs for a book by ISBN.
  *
- * Strategy:
- * 1. Title + author search first — sorted by relevance, so the most popular
- *    edition (which has a real cover) comes first. ISBN-matched volumes are
- *    often catalog-only entries that return Google's "no cover" placeholder.
- * 2. Fall back to ISBN lookup only if the title search yields nothing.
- *
- * Returns both a high-res primary URL and a reliable fallback URL.
+ * Primary:    Open Library large  (real 404 when missing → onError fires)
+ * Fallback:   Open Library medium
+ * Last resort: Google Books fife  (via title+author search for a volume with real cover)
  */
 export async function getCoverUrlByIsbn(
   isbn: string,
   { title, author }: { title: string; author: string }
-): Promise<CoverUrls | undefined> {
-  // --- Step 1: title + author search (most reliable for real cover images) ---
+): Promise<CoverUrls> {
+  const primary = olCoverUrl(isbn, "L");
+  const fallback = olCoverUrl(isbn, "M");
+
+  // Find a Google Books volume with a real cover for last-resort fallback
   const lastName = author.split(" ").pop() ?? author;
   const titleUrl = buildUrl("/volumes", {
     q: `intitle:${encodeURIComponent(title)}+inauthor:${encodeURIComponent(lastName)}`,
     maxResults: "8",
     langRestrict: "en",
   });
-  const titleRes = await fetch(titleUrl, { next: { revalidate: 86400 } });
 
-  if (titleRes.ok) {
-    const titleData = await titleRes.json();
-    const items: VolumeRaw[] = titleData.items ?? [];
-
-    for (const item of items) {
-      if (
-        item.volumeInfo?.imageLinks &&
-        titlesMatch(item.volumeInfo.title ?? "", title)
-      ) {
-        return { primary: primaryCoverUrl(item.id), fallback: fallbackCoverUrl(item.id) };
+  let lastResort: string | undefined;
+  try {
+    const res = await fetch(titleUrl, { next: { revalidate: 86400 } });
+    if (res.ok) {
+      const data = await res.json();
+      const items: VolumeRaw[] = data.items ?? [];
+      for (const item of items) {
+        if (item.volumeInfo?.imageLinks && titlesMatch(item.volumeInfo.title ?? "", title)) {
+          lastResort = googleCoverUrl(item.id);
+          break;
+        }
       }
     }
+  } catch {
+    // Non-fatal — we still have OL as primary and fallback
   }
 
-  // --- Step 2: ISBN lookup fallback ---
-  const isbnUrl = buildUrl("/volumes", { q: `isbn:${isbn}`, maxResults: "1" });
-  const isbnRes = await fetch(isbnUrl, { next: { revalidate: 86400 } });
-
-  if (isbnRes.ok) {
-    const data = await isbnRes.json();
-    const item: VolumeRaw | undefined = data.items?.[0];
-    if (item?.volumeInfo?.imageLinks && titlesMatch(item.volumeInfo.title ?? "", title)) {
-      return { primary: primaryCoverUrl(item.id), fallback: fallbackCoverUrl(item.id) };
-    }
-  }
-
-  return undefined;
+  return { primary, fallback, lastResort };
 }
 
 /**

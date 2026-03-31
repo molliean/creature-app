@@ -14,6 +14,7 @@ function toBookResult(book: Awaited<ReturnType<typeof searchByMood>>[number]): B
     genres: book.categories ?? [],
     coverUrl: book.coverUrl,
     coverFallbackUrl: book.coverFallbackUrl,
+    coverLastResortUrl: book.coverLastResortUrl,
   };
 }
 

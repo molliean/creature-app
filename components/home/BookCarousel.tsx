@@ -8,6 +8,7 @@ type BookItem = {
   coverTone: string;
   coverUrl?: string;
   coverFallbackUrl?: string;
+  coverLastResortUrl?: string;
 };
 
 type BookCarouselProps = {
@@ -27,6 +28,7 @@ export function BookCarousel({ books }: BookCarouselProps) {
                 <CoverImage
                   src={book.coverUrl}
                   fallbackSrc={book.coverFallbackUrl}
+                  lastResortSrc={book.coverLastResortUrl}
                   alt={`Cover of ${book.title}`}
                   sizes="290px"
                   placeholderTitle={book.title}
