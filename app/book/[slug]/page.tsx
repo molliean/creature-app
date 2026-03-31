@@ -4,7 +4,7 @@ import { TopNav } from "@/components/TopNav";
 import { ActionButtons } from "@/components/book/ActionButtons";
 import { CoverImage } from "@/components/CoverImage";
 import { getBookBySlug } from "@/lib/books";
-import { getBookById, searchBooks, type GoogleBook } from "@/lib/googleBooks";
+import { getBookById, searchBooks, olCoverUrl, googleCoverUrl, type GoogleBook } from "@/lib/googleBooks";
 
 const AFFILIATE_ID = "12345";
 
@@ -40,19 +40,15 @@ export default async function BookDetailPage({
   const description = googleBook?.description ?? staticBook?.synopsis;
   const readingStatus = staticBook?.readingStatus ?? null;
 
-  // Cover chain: local file → OL large (from isbn) → OL medium → Google Books
-  const coverUrl =
-    staticBook?.localCover ??
-    (isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg` : undefined) ??
-    googleBook?.coverUrl;
+  // Cover chain: local file → OL large → OL medium → Google Books fife
+  const olLarge  = isbn ? olCoverUrl(isbn, "L") : null;
+  const olMedium = isbn ? olCoverUrl(isbn, "M") : null;
+  const googleLast = googleBook?.coverLastResortUrl
+    ?? (googleBook?.id ? googleCoverUrl(googleBook.id) : null);
 
-  const coverFallbackUrl = staticBook?.localCover
-    ? undefined
-    : isbn
-    ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`
-    : undefined;
-
-  const coverLastResortUrl = staticBook?.localCover ? undefined : googleBook?.coverLastResortUrl;
+  const coverUrl           = staticBook?.localCover ?? olLarge ?? googleBook?.coverUrl;
+  const coverFallbackUrl   = staticBook?.localCover ? undefined : olMedium ?? undefined;
+  const coverLastResortUrl = staticBook?.localCover ? undefined : googleLast ?? undefined;
 
   const shopUrl = isbn ? `https://bookshop.org/a/${AFFILIATE_ID}/${isbn}` : null;
 

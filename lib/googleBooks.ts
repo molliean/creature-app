@@ -9,14 +9,37 @@ export type GoogleBook = {
   pageCount?: number;
   categories?: string[];
   description?: string;
-  /** Open Library large cover (primary). Real 404 when missing — onError fires correctly. */
+  /** Open Library large cover — ?default=false means real 404 on miss so onError fires. */
   coverUrl?: string;
   /** Open Library medium cover (first fallback). */
   coverFallbackUrl?: string;
-  /** Google Books fife cover (last resort). */
+  /** Google Books fife cover (last resort, found via title+author search). */
   coverLastResortUrl?: string;
   isbn?: string;
 };
+
+// ---------------------------------------------------------------------------
+// Cover URL helpers (exported so other pages can reuse them)
+// ---------------------------------------------------------------------------
+
+/**
+ * Open Library cover URL.
+ * CRITICAL: ?default=false forces a real HTTP 404 when no cover exists.
+ * Without it, OL returns a 43-byte 1×1 transparent GIF (HTTP 200) which
+ * looks like a success — onError never fires and the fallback chain breaks.
+ */
+export function olCoverUrl(isbn: string, size: "L" | "M"): string {
+  return `https://covers.openlibrary.org/b/isbn/${isbn}-${size}.jpg?default=false`;
+}
+
+/** Google Books fife cover — high-res, used as last resort. */
+export function googleCoverUrl(volumeId: string): string {
+  return `https://books.google.com/books/content?id=${volumeId}&printsec=frontcover&img=1&fife=w800`;
+}
+
+// ---------------------------------------------------------------------------
+// Google Books API internals
+// ---------------------------------------------------------------------------
 
 function getApiKey(): string {
   return process.env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY ?? "";
@@ -27,15 +50,6 @@ function buildUrl(path: string, params: Record<string, string> = {}): string {
   const allParams = key ? { ...params, key } : params;
   const qs = new URLSearchParams(allParams).toString();
   return `${BASE_URL}${path}${qs ? `?${qs}` : ""}`;
-}
-
-function olCoverUrl(isbn: string, size: "L" | "M" | "S"): string {
-  return `https://covers.openlibrary.org/b/isbn/${isbn}-${size}.jpg`;
-}
-
-/** Google Books high-res cover — used only as last resort. */
-function googleCoverUrl(volumeId: string): string {
-  return `https://books.google.com/books/content?id=${volumeId}&printsec=frontcover&img=1&fife=w600`;
 }
 
 /** Returns true if `returned` roughly matches `expected` (case-insensitive, ignores punctuation). */
@@ -63,7 +77,6 @@ type VolumeRaw = {
 
 function volumeToGoogleBook(volume: VolumeRaw): GoogleBook {
   const info = volume.volumeInfo ?? {};
-
   const hasCover = !!(info.imageLinks?.thumbnail ?? info.imageLinks?.smallThumbnail);
 
   const isbn =
@@ -72,12 +85,6 @@ function volumeToGoogleBook(volume: VolumeRaw): GoogleBook {
 
   const yearRaw = info.publishedDate ? parseInt(info.publishedDate.slice(0, 4), 10) : NaN;
   const year = isNaN(yearRaw) ? undefined : yearRaw;
-
-  // Cover priority: OL Large → OL Medium → Google Books fife
-  // Open Library returns a real 404 for missing covers so onError fires correctly.
-  const coverUrl = isbn ? olCoverUrl(isbn, "L") : hasCover ? googleCoverUrl(volume.id) : undefined;
-  const coverFallbackUrl = isbn ? olCoverUrl(isbn, "M") : undefined;
-  const coverLastResortUrl = isbn && hasCover ? googleCoverUrl(volume.id) : undefined;
 
   return {
     id: volume.id,
@@ -88,27 +95,27 @@ function volumeToGoogleBook(volume: VolumeRaw): GoogleBook {
     pageCount: info.pageCount,
     categories: info.categories,
     description: info.description,
-    coverUrl,
-    coverFallbackUrl,
-    coverLastResortUrl,
+    // OL primary (real 404 on miss) → OL medium fallback → Google last resort
+    coverUrl:         isbn ? olCoverUrl(isbn, "L") : hasCover ? googleCoverUrl(volume.id) : undefined,
+    coverFallbackUrl: isbn ? olCoverUrl(isbn, "M") : undefined,
+    coverLastResortUrl: isbn && hasCover ? googleCoverUrl(volume.id) : undefined,
     isbn,
   };
 }
 
+// ---------------------------------------------------------------------------
+// Public API
+// ---------------------------------------------------------------------------
+
 /** Search books by title, author, or keyword. */
-export async function searchBooks(
-  query: string,
-  maxResults = 20
-): Promise<GoogleBook[]> {
+export async function searchBooks(query: string, maxResults = 20): Promise<GoogleBook[]> {
   const url = buildUrl("/volumes", {
     q: query,
     maxResults: String(maxResults),
     langRestrict: "en",
   });
-
   const res = await fetch(url, { next: { revalidate: 3600 } });
   if (!res.ok) return [];
-
   const data = await res.json();
   return ((data.items ?? []) as VolumeRaw[]).map(volumeToGoogleBook);
 }
@@ -116,10 +123,8 @@ export async function searchBooks(
 /** Fetch a single book's full details by Google Books volume ID. */
 export async function getBookById(id: string): Promise<GoogleBook | null> {
   const url = buildUrl(`/volumes/${id}`);
-
   const res = await fetch(url, { next: { revalidate: 3600 } });
   if (!res.ok) return null;
-
   const data = await res.json();
   return volumeToGoogleBook(data as VolumeRaw);
 }
@@ -127,17 +132,18 @@ export async function getBookById(id: string): Promise<GoogleBook | null> {
 export type CoverUrls = { primary: string; fallback: string; lastResort?: string };
 
 /**
- * Build cover URLs for a book by ISBN.
+ * Build cover URLs for a static library book by ISBN.
  *
- * Primary:    Open Library large  (real 404 when missing → onError fires)
- * Fallback:   Open Library medium
- * Last resort: Google Books fife  (via title+author search for a volume with real cover)
+ * Chain: OL large → OL medium → Google Books fife
+ *
+ * OL uses ?default=false so missing covers return HTTP 404 (not 1×1 GIF).
+ * Google Books: title+author search finds the popular edition with a real cover.
  */
 export async function getCoverUrlByIsbn(
   isbn: string,
   { title, author }: { title: string; author: string }
 ): Promise<CoverUrls> {
-  const primary = olCoverUrl(isbn, "L");
+  const primary  = olCoverUrl(isbn, "L");
   const fallback = olCoverUrl(isbn, "M");
 
   // Find a Google Books volume with a real cover for last-resort fallback
@@ -153,8 +159,7 @@ export async function getCoverUrlByIsbn(
     const res = await fetch(titleUrl, { next: { revalidate: 86400 } });
     if (res.ok) {
       const data = await res.json();
-      const items: VolumeRaw[] = data.items ?? [];
-      for (const item of items) {
+      for (const item of (data.items ?? []) as VolumeRaw[]) {
         if (item.volumeInfo?.imageLinks && titlesMatch(item.volumeInfo.title ?? "", title)) {
           lastResort = googleCoverUrl(item.id);
           break;
@@ -162,7 +167,7 @@ export async function getCoverUrlByIsbn(
       }
     }
   } catch {
-    // Non-fatal — we still have OL as primary and fallback
+    // Non-fatal — OL primary and fallback are still in the chain
   }
 
   return { primary, fallback, lastResort };
@@ -172,10 +177,6 @@ export async function getCoverUrlByIsbn(
  * Search for books based on a mood or vibe description.
  * Appends a subject:fiction hint to steer results toward literary titles.
  */
-export async function searchByMood(
-  prompt: string,
-  maxResults = 20
-): Promise<GoogleBook[]> {
-  const query = `${prompt}+subject:fiction`;
-  return searchBooks(query, maxResults);
+export async function searchByMood(prompt: string, maxResults = 20): Promise<GoogleBook[]> {
+  return searchBooks(`${prompt}+subject:fiction`, maxResults);
 }
