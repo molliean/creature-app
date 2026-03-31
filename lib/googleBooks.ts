@@ -119,11 +119,13 @@ export async function getBookById(id: string): Promise<GoogleBook | null> {
 export type CoverUrls = { primary: string; fallback: string };
 
 /**
- * Fetch cover URLs for a book by ISBN, validated against the expected title.
+ * Fetch cover URLs for a book, validated against the expected title.
  *
  * Strategy:
- * 1. ISBN lookup — if the returned title matches, use it.
- * 2. If that fails or returns the wrong book, try intitle + inauthor search.
+ * 1. Title + author search first — sorted by relevance, so the most popular
+ *    edition (which has a real cover) comes first. ISBN-matched volumes are
+ *    often catalog-only entries that return Google's "no cover" placeholder.
+ * 2. Fall back to ISBN lookup only if the title search yields nothing.
  *
  * Returns both a high-res primary URL and a reliable fallback URL.
  */
@@ -131,7 +133,30 @@ export async function getCoverUrlByIsbn(
   isbn: string,
   { title, author }: { title: string; author: string }
 ): Promise<CoverUrls | undefined> {
-  // --- Step 1: ISBN lookup ---
+  // --- Step 1: title + author search (most reliable for real cover images) ---
+  const lastName = author.split(" ").pop() ?? author;
+  const titleUrl = buildUrl("/volumes", {
+    q: `intitle:${encodeURIComponent(title)}+inauthor:${encodeURIComponent(lastName)}`,
+    maxResults: "8",
+    langRestrict: "en",
+  });
+  const titleRes = await fetch(titleUrl, { next: { revalidate: 86400 } });
+
+  if (titleRes.ok) {
+    const titleData = await titleRes.json();
+    const items: VolumeRaw[] = titleData.items ?? [];
+
+    for (const item of items) {
+      if (
+        item.volumeInfo?.imageLinks &&
+        titlesMatch(item.volumeInfo.title ?? "", title)
+      ) {
+        return { primary: primaryCoverUrl(item.id), fallback: fallbackCoverUrl(item.id) };
+      }
+    }
+  }
+
+  // --- Step 2: ISBN lookup fallback ---
   const isbnUrl = buildUrl("/volumes", { q: `isbn:${isbn}`, maxResults: "1" });
   const isbnRes = await fetch(isbnUrl, { next: { revalidate: 86400 } });
 
@@ -139,27 +164,6 @@ export async function getCoverUrlByIsbn(
     const data = await isbnRes.json();
     const item: VolumeRaw | undefined = data.items?.[0];
     if (item?.volumeInfo?.imageLinks && titlesMatch(item.volumeInfo.title ?? "", title)) {
-      return { primary: primaryCoverUrl(item.id), fallback: fallbackCoverUrl(item.id) };
-    }
-  }
-
-  // --- Step 2: title + author fallback ---
-  const lastName = author.split(" ").pop() ?? author;
-  const titleUrl = buildUrl("/volumes", {
-    q: `intitle:${encodeURIComponent(title)}+inauthor:${encodeURIComponent(lastName)}`,
-    maxResults: "5",
-  });
-  const titleRes = await fetch(titleUrl, { next: { revalidate: 86400 } });
-  if (!titleRes.ok) return undefined;
-
-  const titleData = await titleRes.json();
-  const items: VolumeRaw[] = titleData.items ?? [];
-
-  for (const item of items) {
-    if (
-      item.volumeInfo?.imageLinks &&
-      titlesMatch(item.volumeInfo.title ?? "", title)
-    ) {
       return { primary: primaryCoverUrl(item.id), fallback: fallbackCoverUrl(item.id) };
     }
   }
