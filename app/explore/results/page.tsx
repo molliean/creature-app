@@ -30,7 +30,7 @@ export default async function SearchResultsPage({
 
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
-      <TopNav />
+      <TopNav isAuthenticated />
       <main className="flex flex-col gap-6 px-8 py-8">
         {/* Editable search input */}
         <ResultsSearchBar initialQuery={query} />
