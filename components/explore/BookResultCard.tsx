@@ -12,6 +12,7 @@ export type BookResult = {
   coverUrl?: string;
   coverFallbackUrl?: string;
   coverLastResortUrl?: string;
+  reason?: string;
 };
 
 export function BookResultCard({ book }: { book: BookResult }) {
@@ -56,6 +57,11 @@ export function BookResultCard({ book }: { book: BookResult }) {
           {book.genres.length > 0 && (
             <p className="font-ligconsolata text-[16px] leading-[1.049em] font-normal text-[#686868]">
               {book.genres.join(", ")}
+            </p>
+          )}
+          {book.reason && (
+            <p className="font-ligconsolata text-[16px] leading-[1.5em] font-normal text-[#4A4A4A] mt-1 border-l-2 border-[#D79E2D] pl-3">
+              {book.reason}
             </p>
           )}
         </div>

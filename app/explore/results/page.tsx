@@ -1,22 +1,7 @@
 import { TopNav } from "@/components/TopNav";
 import { ResultsSearchBar } from "@/components/explore/ResultsSearchBar";
-import { BookResultCard, type BookResult } from "@/components/explore/BookResultCard";
-import { searchByMood } from "@/lib/googleBooks";
-
-function toBookResult(book: Awaited<ReturnType<typeof searchByMood>>[number]): BookResult {
-  return {
-    id: book.id,
-    title: book.title,
-    author: book.authors.join(", ") || "Unknown Author",
-    year: book.year,
-    publisher: book.publisher,
-    pages: book.pageCount,
-    genres: book.categories ?? [],
-    coverUrl: book.coverUrl,
-    coverFallbackUrl: book.coverFallbackUrl,
-    coverLastResortUrl: book.coverLastResortUrl,
-  };
-}
+import { BookResultCard } from "@/components/explore/BookResultCard";
+import { getAiRecommendations } from "@/lib/aiRecommendations";
 
 export default async function SearchResultsPage({
   searchParams,
@@ -26,7 +11,7 @@ export default async function SearchResultsPage({
   const { q } = await searchParams;
   const query = typeof q === "string" ? q.trim() : "";
 
-  const results = query ? (await searchByMood(query)).map(toBookResult) : [];
+  const results = query ? await getAiRecommendations(query) : [];
 
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
@@ -38,7 +23,7 @@ export default async function SearchResultsPage({
         {/* Results count */}
         {query && (
           <p className="font-ligconsolata text-[24px] leading-[1.049em] font-normal text-black">
-            {results.length} result{results.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
+            {results.length} recommendation{results.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
           </p>
         )}
 
@@ -51,7 +36,7 @@ export default async function SearchResultsPage({
           </div>
         ) : query ? (
           <p className="font-ligconsolata text-[18px] text-[#686868]">
-            No results found. Try a different search.
+            No recommendations found. Try a different search.
           </p>
         ) : null}
       </main>
