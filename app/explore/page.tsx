@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { TopNav } from "@/components/TopNav";
+
+export const metadata: Metadata = {
+  title: "Explore — Creature",
+};
 import { ExplorePrompt } from "@/components/explore/ExplorePrompt";
 
 export default function ExplorePage() {

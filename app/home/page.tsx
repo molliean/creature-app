@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { TopNav } from "@/components/TopNav";
+
+export const metadata: Metadata = {
+  title: "My Shelf — Creature",
+};
 import { BookCarousel } from "@/components/home/BookCarousel";
 import { Tabs } from "@/components/home/Tabs";
 import { BOOKS } from "@/lib/books";

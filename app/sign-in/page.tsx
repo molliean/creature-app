@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Sign In — Creature",
+};
 import { signIn } from "@/app/actions/auth";
 
 export default function SignInPage() {

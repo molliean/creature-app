@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import { TopNav } from "@/components/TopNav";
 import { SearchClient } from "@/components/search/SearchClient";
 import { searchBooks } from "@/lib/googleBooks";
 import type { BookResult } from "@/components/explore/BookResultCard";
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}): Promise<Metadata> {
+  const { q } = await searchParams;
+  const query = typeof q === "string" ? q.trim() : "";
+  return {
+    title: query ? `Results for '${query}' — Creature` : "Search — Creature",
+  };
+}
 
 export default async function SearchPage({
   searchParams,

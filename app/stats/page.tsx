@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { TopNav } from "@/components/TopNav";
+
+export const metadata: Metadata = {
+  title: "Reading Stats — Creature",
+};
 import { StatCard } from "@/components/stats/StatCard";
 import { MonthlyChart } from "@/components/stats/MonthlyChart";
 import { GenreChart } from "@/components/stats/GenreChart";

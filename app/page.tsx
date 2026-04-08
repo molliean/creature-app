@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { LandingCarousel } from "@/components/landing/LandingCarousel";
+
+export const metadata: Metadata = {
+  title: "Creature",
+};
 
 export default function LandingPage() {
   return (

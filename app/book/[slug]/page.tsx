@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TopNav } from "@/components/TopNav";
@@ -7,6 +8,23 @@ import { getBookBySlug } from "@/lib/books";
 import { getBookById, searchBooks, olCoverUrl, googleCoverUrl, type GoogleBook } from "@/lib/googleBooks";
 
 const AFFILIATE_ID = "12345";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const staticBook = getBookBySlug(slug);
+
+  if (staticBook) {
+    return { title: `${staticBook.title} — Creature` };
+  }
+
+  const googleBook = await getBookById(slug);
+  const title = googleBook?.title ?? "Book";
+  return { title: `${title} — Creature` };
+}
 
 export default async function BookDetailPage({
   params,
