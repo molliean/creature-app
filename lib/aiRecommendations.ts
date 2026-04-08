@@ -44,6 +44,7 @@ Rules:
 - Include a mix of well-known and overlooked titles when appropriate
 - The "reason" field must be specific to the reader's described mood — not a generic description of the book
 - You MUST provide a valid 13-digit ISBN for every book. If you are uncertain of the exact ISBN, choose a different book you are confident about. Never return a book without a valid ISBN. This is a strict requirement — an incomplete response is worse than recommending a different book.
+- Aim to mix publication eras — include both contemporary titles (published after 2000) and older or classic works where appropriate. Do not recommend only recent books.
 - Do not include any text outside the JSON object`;
 
 // ---------------------------------------------------------------------------
