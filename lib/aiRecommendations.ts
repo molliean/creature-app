@@ -32,7 +32,7 @@ You respond ONLY with valid JSON — no preamble, no explanation, no markdown fe
     {
       "title": "exact title of the book",
       "author": "First Last",
-      "isbn": "ISBN-13 if you know it, otherwise omit the field entirely",
+      "isbn": "ISBN-13, exactly 13 digits, no hyphens — REQUIRED",
       "reason": "one sentence explaining why this book perfectly matches the reader's mood"
     }
   ]
@@ -43,7 +43,7 @@ Rules:
 - Prioritize books that genuinely match the mood over famous names
 - Include a mix of well-known and overlooked titles when appropriate
 - The "reason" field must be specific to the reader's described mood — not a generic description of the book
-- For "isbn", provide the ISBN-13 (13 digits, no hyphens) if you are confident of it; otherwise omit the field entirely — a missing isbn is better than a wrong one
+- You MUST provide a valid 13-digit ISBN for every book. If you are uncertain of the exact ISBN, choose a different book you are confident about. Never return a book without a valid ISBN. This is a strict requirement — an incomplete response is worse than recommending a different book.
 - Do not include any text outside the JSON object`;
 
 // ---------------------------------------------------------------------------
