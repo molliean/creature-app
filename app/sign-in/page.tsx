@@ -21,7 +21,7 @@ export default function SignInPage() {
               id="email"
               name="email"
               type="email"
-              className="font-ligconsolata border border-black bg-transparent px-4 py-3 text-[15px] outline-none focus:ring-1 focus:ring-black"
+              className="font-ligconsolata border border-black bg-transparent px-4 py-3 text-[15px] text-[#1a1a1a] outline-none focus:ring-1 focus:ring-black"
               placeholder="you@example.com"
             />
           </div>
@@ -33,7 +33,7 @@ export default function SignInPage() {
               id="password"
               name="password"
               type="password"
-              className="font-ligconsolata border border-black bg-transparent px-4 py-3 text-[15px] outline-none focus:ring-1 focus:ring-black"
+              className="font-ligconsolata border border-black bg-transparent px-4 py-3 text-[15px] text-[#1a1a1a] outline-none focus:ring-1 focus:ring-black"
               placeholder="••••••••"
             />
           </div>

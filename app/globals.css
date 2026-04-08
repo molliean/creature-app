@@ -36,3 +36,31 @@ body {
 .font-shippori-mincho {
   font-family: var(--font-shippori-mincho), serif;
 }
+
+/* ---- Landing page book carousel ---- */
+@keyframes carousel-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes carousel-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.carousel-left {
+  animation: carousel-left 45s linear infinite;
+  will-change: transform;
+}
+
+.carousel-right {
+  animation: carousel-right 55s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-left,
+  .carousel-right {
+    animation-play-state: paused;
+  }
+}

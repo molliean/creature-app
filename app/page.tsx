@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { LandingCarousel } from "@/components/landing/LandingCarousel";
 
 export default function LandingPage() {
   return (
@@ -49,21 +49,9 @@ export default function LandingPage() {
           </div>
         </div>
 
-        {/* Right: app preview */}
+        {/* Right: animated book carousel */}
         <div className="relative flex-1 h-full max-h-[calc(100vh-120px)] overflow-hidden border border-black shadow-[4px_4px_0px_rgba(0,0,0,0.15)]">
-          <Image
-            src="/images/app-preview.png"
-            alt="Creature app preview"
-            fill
-            style={{ objectFit: "cover", objectPosition: "top left" }}
-            priority
-            unoptimized
-          />
-          {/* Placeholder overlay — remove once a real screenshot is added */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#8B9DAA]/60">
-            <span className="font-rubik-beastly text-[60px] leading-none text-[#F79E1B]">C</span>
-            <span className="font-ligconsolata text-[16px] text-black/60">App preview</span>
-          </div>
+          <LandingCarousel />
         </div>
       </main>
     </div>

@@ -11,7 +11,7 @@ export function NavSearchForm({ placeholder }: { placeholder: string }) {
     e.preventDefault();
     const q = value.trim();
     if (q) {
-      router.push(`/explore/results?q=${encodeURIComponent(q)}`);
+      router.push(`/search?q=${encodeURIComponent(q)}`);
     }
   }
 
