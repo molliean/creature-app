@@ -9,6 +9,7 @@ export type BookResult = {
   publisher?: string;
   pages?: number;
   genres: string[];
+  isbn?: string;
   coverUrl?: string;
   coverFallbackUrl?: string;
   coverLastResortUrl?: string;

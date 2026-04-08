@@ -124,6 +124,7 @@ async function enrichBook(book: ClaudeBook): Promise<BookResult> {
     publisher: googleBook?.publisher,
     pages: googleBook?.pageCount,
     genres: googleBook?.categories ?? [],
+    isbn: book.isbn ?? googleBook?.isbn,
     coverUrl: olLarge ?? googleBook?.coverUrl,
     coverFallbackUrl: olMedium,
     coverLastResortUrl: googleLast,
