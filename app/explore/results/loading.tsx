@@ -3,7 +3,7 @@ import { TopNav } from "@/components/TopNav";
 export default function Loading() {
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
-      <TopNav isAuthenticated />
+      <TopNav />
       <main className="flex flex-col gap-6 px-8 py-8">
         <div className="flex flex-col gap-4">
           <p className="font-ligconsolata text-[18px] leading-[1.5em] text-[#686868] animate-pulse">

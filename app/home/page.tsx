@@ -48,7 +48,7 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
-      <TopNav isAuthenticated />
+      <TopNav />
       <main className="flex min-h-[982px] w-full flex-col gap-[17px]">
         <section className="flex w-full flex-col gap-[17px] pl-6">
           <div className="flex items-center justify-start gap-[10px] p-[10px]">

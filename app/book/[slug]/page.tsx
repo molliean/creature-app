@@ -72,7 +72,7 @@ export default async function BookDetailPage({
 
   return (
     <div className="h-screen w-full overflow-hidden bg-[#CBDEE1] text-black">
-      <TopNav isAuthenticated />
+      <TopNav />
       <div className="flex h-[calc(100vh-69px)] gap-12 px-8 py-8">
 
         {/* Cover — fills remaining height */}

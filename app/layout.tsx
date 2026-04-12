@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inconsolata, Rubik_Beastly, Shippori_Mincho } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 const ligconsolata = Inconsolata({
@@ -34,7 +35,9 @@ export default function RootLayout({
       lang="en"
       className={`${ligconsolata.variable} ${rubikBeastly.variable} ${shipporiMincho.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ClerkProvider>{children}</ClerkProvider>
+      </body>
     </html>
   );
 }

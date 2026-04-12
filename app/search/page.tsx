@@ -43,7 +43,7 @@ export default async function SearchPage({
 
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
-      <TopNav isAuthenticated />
+      <TopNav />
       <main className="flex flex-col gap-6 px-8 py-8">
         <SearchClient initialQuery={query} initialResults={initialResults} />
       </main>

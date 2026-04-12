@@ -39,7 +39,7 @@ const genreTotal = genreData.reduce((sum, d) => sum + d.count, 0);
 export default function StatsPage() {
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
-      <TopNav isAuthenticated />
+      <TopNav />
       <main className="flex w-full flex-col gap-[17px] px-8 pt-10 pb-16">
         <div className="flex items-center gap-[10px] p-[10px]">
           <h1 className="font-shippori-mincho text-[40px] leading-[1.448em] font-normal text-black">

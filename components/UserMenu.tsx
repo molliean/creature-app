@@ -1,11 +1,13 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { signOut } from "@/app/actions/auth";
+import { useClerk, useUser } from "@clerk/nextjs";
 
 export function UserMenu() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const { signOut } = useClerk();
+  const { user } = useUser();
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -16,6 +18,8 @@ export function UserMenu() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  if (!user) return null;
 
   return (
     <div ref={ref} className="relative">
@@ -66,14 +70,13 @@ export function UserMenu() {
               </a>
             </li>
             <li className="border-t border-black/20">
-              <form action={signOut}>
-                <button
-                  type="submit"
-                  className="block w-full px-4 py-3 text-left transition-opacity hover:opacity-70"
-                >
-                  Sign out
-                </button>
-              </form>
+              <button
+                type="button"
+                className="block w-full px-4 py-3 text-left transition-opacity hover:opacity-70"
+                onClick={() => signOut({ redirectUrl: "/" })}
+              >
+                Sign out
+              </button>
             </li>
           </ul>
         </div>

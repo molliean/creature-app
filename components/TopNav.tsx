@@ -11,7 +11,6 @@ type TopNavProps = {
   brand?: string;
   links?: NavItem[];
   searchPlaceholder?: string;
-  isAuthenticated?: boolean;
 };
 
 const defaultLinks: NavItem[] = [
@@ -25,7 +24,6 @@ export function TopNav({
   brand = "C",
   links = defaultLinks,
   searchPlaceholder = "Search titles...",
-  isAuthenticated = false,
 }: TopNavProps) {
   return (
     <header className="w-full border-b border-black bg-[#CBDEE1]">
@@ -49,7 +47,7 @@ export function TopNav({
 
         <div className="flex items-center gap-4">
           <NavSearchForm placeholder={searchPlaceholder} />
-          {isAuthenticated && <UserMenu />}
+          <UserMenu />
         </div>
       </div>
     </header>
