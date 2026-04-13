@@ -31,7 +31,7 @@ export default function LandingPage() {
               Your reading life,<br />beautifully tracked.
             </h1>
             <p className="font-ligconsolata text-[18px] leading-[1.6em] text-[#4A4A4A]">
-              Keep a shelf of everything you&rsquo;ve read, discover what to read next, and explore books that match your mood.
+              Explore books that match your mood, keep track of everything you&rsquo;ve read, and discover what to read next.
             </p>
           </div>
 
