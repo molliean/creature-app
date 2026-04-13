@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BookResultCard, type BookResult } from "@/components/explore/BookResultCard";
 
@@ -15,6 +15,15 @@ export function SearchClient({ initialQuery, initialResults }: Props) {
   const [results, setResults] = useState<BookResult[]>(initialResults);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  // Sync state when the page navigates to a new query (e.g. from the nav bar
+  // while already on the search page — same component instance, new props).
+  useEffect(() => {
+    setInputValue(initialQuery);
+    setActiveQuery(initialQuery);
+    setResults(initialResults);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialQuery]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

@@ -16,6 +16,7 @@ export type GoogleBook = {
   /** Google Books fife cover (last resort, found via title+author search). */
   coverLastResortUrl?: string;
   isbn?: string;
+  ratingsCount?: number;
 };
 
 // ---------------------------------------------------------------------------
@@ -72,6 +73,8 @@ type VolumeRaw = {
     description?: string;
     imageLinks?: { thumbnail?: string; smallThumbnail?: string };
     industryIdentifiers?: { type: string; identifier: string }[];
+    ratingsCount?: number;
+    averageRating?: number;
   };
 };
 
@@ -100,6 +103,7 @@ function volumeToGoogleBook(volume: VolumeRaw): GoogleBook {
     coverFallbackUrl: isbn ? olCoverUrl(isbn, "M") : undefined,
     coverLastResortUrl: isbn && hasCover ? googleCoverUrl(volume.id) : undefined,
     isbn,
+    ratingsCount: info.ratingsCount,
   };
 }
 
@@ -107,17 +111,79 @@ function volumeToGoogleBook(volume: VolumeRaw): GoogleBook {
 // Public API
 // ---------------------------------------------------------------------------
 
-/** Search books by title, author, or keyword. */
-export async function searchBooks(query: string, maxResults = 20): Promise<GoogleBook[]> {
+
+function normalizeTitle(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9\s]/g, "").trim();
+}
+
+/**
+ * Score a book for re-ranking.
+ *
+ * Ranking priority:
+ *  1. All query words appear in title + high ratingsCount (popular title match)
+ *  2. All query words appear in title but lower ratings
+ *  3. Pure popularity (ratingsCount) for everything else
+ *
+ * Deliberately avoids huge exact-title bonuses so an obscure book titled
+ * exactly "goon squad" doesn't beat "A Visit from the Goon Squad" (Egan).
+ */
+function scoreBook(book: GoogleBook, queryWords: string[]): number {
+  const title = normalizeTitle(book.title);
+  const allWordsInTitle = queryWords.every((w) => title.includes(w));
+  const ratingsCount = book.ratingsCount ?? 0;
+  return (allWordsInTitle ? 5_000 : 0) + ratingsCount;
+}
+
+async function fetchVolumes(q: string): Promise<VolumeRaw[]> {
   const url = buildUrl("/volumes", {
-    q: query,
-    maxResults: String(maxResults),
+    q,
+    maxResults: "20",
+    orderBy: "relevance",
     langRestrict: "en",
   });
   const res = await fetch(url, { next: { revalidate: 3600 } });
   if (!res.ok) return [];
   const data = await res.json();
-  return ((data.items ?? []) as VolumeRaw[]).map(volumeToGoogleBook);
+  return (data.items ?? []) as VolumeRaw[];
+}
+
+/**
+ * Search books by title, author, or keyword.
+ *
+ * Strategy:
+ * 1. For short queries (≤ 3 words), try intitle: first to surface title
+ *    matches — falls back to a broad search if fewer than 3 results come back.
+ * 2. Always requests orderBy=relevance, maxResults=20, and explicit fields
+ *    so ratingsCount is reliably included.
+ * 3. Deduplicates and re-ranks client-side: books where all query words appear
+ *    in the title score a moderate bonus, then ratingsCount breaks all ties —
+ *    so popular books like "A Visit from the Goon Squad" beat obscure
+ *    exact-title matches.
+ * 4. Returns top 8 after re-ranking.
+ */
+export async function searchBooks(query: string): Promise<GoogleBook[]> {
+  const words = query.trim().split(/\s+/);
+  const isShort = words.length <= 3;
+  const queryWords = words.map((w) => normalizeTitle(w)).filter(Boolean);
+
+  let raw: VolumeRaw[] = [];
+
+  if (isShort) {
+    const titleRaw = await fetchVolumes(`intitle:${query}`);
+    if (titleRaw.length >= 3) {
+      raw = titleRaw;
+    } else {
+      const broadRaw = await fetchVolumes(query);
+      const seen = new Set(titleRaw.map((v) => v.id));
+      raw = [...titleRaw, ...broadRaw.filter((v) => !seen.has(v.id))];
+    }
+  } else {
+    raw = await fetchVolumes(query);
+  }
+
+  const books = raw.map(volumeToGoogleBook);
+  books.sort((a, b) => scoreBook(b, queryWords) - scoreBook(a, queryWords));
+  return books.slice(0, 8);
 }
 
 /** Fetch a single book's full details by Google Books volume ID. */
@@ -177,6 +243,6 @@ export async function getCoverUrlByIsbn(
  * Search for books based on a mood or vibe description.
  * Appends a subject:fiction hint to steer results toward literary titles.
  */
-export async function searchByMood(prompt: string, maxResults = 20): Promise<GoogleBook[]> {
-  return searchBooks(`${prompt}+subject:fiction`, maxResults);
+export async function searchByMood(prompt: string): Promise<GoogleBook[]> {
+  return searchBooks(`${prompt}+subject:fiction`);
 }

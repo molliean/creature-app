@@ -109,7 +109,7 @@ async function enrichBook(book: ClaudeBook): Promise<BookResult> {
         book.author.split(" ").pop() ?? book.author
       )}`;
 
-  const results = await searchBooks(query, 3);
+  const results = await searchBooks(query);
   const googleBook = results[0] ?? null;
 
   const isbn = book.isbn ?? googleBook?.isbn;

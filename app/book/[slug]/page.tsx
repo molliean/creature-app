@@ -42,7 +42,7 @@ export default async function BookDetailPage({
 
   if (staticBook?.isbn) {
     // Fetch real description from Google Books using the ISBN
-    const results = await searchBooks(`isbn:${staticBook.isbn}`, 1);
+    const results = await searchBooks(`isbn:${staticBook.isbn}`);
     googleBook = results[0] ?? null;
   } else if (!staticBook) {
     // Slug is likely a Google Books volume ID — fetch directly
