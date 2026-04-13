@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 import { TopNav } from "@/components/TopNav";
 import { ActionButtons } from "@/components/book/ActionButtons";
 import { CoverImage } from "@/components/CoverImage";
 import { getBookBySlug } from "@/lib/books";
 import { getBookById, searchBooks, olCoverUrl, googleCoverUrl, type GoogleBook } from "@/lib/googleBooks";
+import { isBookOnShelf } from "@/lib/shelf";
 
 const AFFILIATE_ID = "12345";
 
@@ -56,7 +58,6 @@ export default async function BookDetailPage({
   const genres = staticBook?.genres ?? googleBook?.categories ?? [];
   const isbn = staticBook?.isbn ?? googleBook?.isbn;
   const description = googleBook?.description ?? staticBook?.synopsis;
-  const readingStatus = staticBook?.readingStatus ?? null;
 
   // Cover chain: local file → OL large → OL medium → Google Books fife
   const olLarge  = isbn ? olCoverUrl(isbn, "L") : null;
@@ -69,6 +70,11 @@ export default async function BookDetailPage({
   const coverLastResortUrl = staticBook?.localCover ? undefined : googleLast ?? undefined;
 
   const shopUrl = isbn ? `https://bookshop.org/a/${AFFILIATE_ID}/${isbn}` : null;
+
+  // Auth + shelf status
+  const { userId } = await auth();
+  const bookId = googleBook?.id ?? slug;
+  const shelfStatus = userId ? await isBookOnShelf(userId, bookId) : null;
 
   return (
     <div className="h-screen w-full overflow-hidden bg-[#CBDEE1] text-black">
@@ -124,22 +130,14 @@ export default async function BookDetailPage({
                 <span className="font-ligconsolata text-[14px] leading-[1.049em] text-[#686868]">{genres.join(", ")}</span>
               )}
             </div>
-            {readingStatus && (
-              <p className="font-ligconsolata text-[14px] leading-[1.049em] text-[#686868]">
-                {readingStatus.status === "finished" && readingStatus.date
-                  ? `Finished on ${readingStatus.date}`
-                  : readingStatus.status === "reading"
-                  ? "Currently reading"
-                  : readingStatus.status === "want"
-                  ? "Want to read"
-                  : "Didn't finish"}
-              </p>
-            )}
           </div>
 
           {/* Action buttons + buy link */}
           <div className="flex flex-col gap-4">
-            <ActionButtons initialStatus={readingStatus?.status ?? null} />
+            <ActionButtons
+              book={{ bookId, title, author, coverUrl: coverUrl ?? undefined, isbn: isbn ?? undefined }}
+              initialStatus={shelfStatus}
+            />
             {shopUrl && (
               <Link
                 href={shopUrl}
