@@ -74,12 +74,12 @@ function EmptyShelf() {
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               placeholder="Search titles..."
-              className="type-body w-full rounded-[8px] border border-black bg-transparent py-[10px] pl-4 pr-14 text-[#1A1A1A] placeholder:text-[#8A8A8A] focus:outline-none focus:ring-1 focus:ring-black"
+              className="type-body w-full rounded-[5px] border border-black bg-transparent py-[10px] pl-4 pr-14 text-[#1A1A1A] placeholder:text-[#8A8A8A] focus:outline-none focus:ring-1 focus:ring-black"
             />
             <button
               type="submit"
               aria-label="Search"
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-black transition-opacity hover:opacity-60 active:opacity-40"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-[20px] text-black transition-opacity hover:opacity-60 active:opacity-40"
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
                 <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" />
@@ -98,7 +98,7 @@ function EmptyShelf() {
             value={moodValue}
             onChange={(e) => setMoodValue(e.target.value)}
             placeholder="A sweeping historical novel set in 1920s Paris..."
-            className="type-body w-full rounded-[8px] border border-black py-[18px] pl-6 pr-16 text-[#1A1A1A] placeholder:text-[#8A8A8A] focus:outline-none focus:ring-1 focus:ring-black"
+            className="type-body w-full rounded-[5px] border border-black py-[18px] pl-6 pr-16 text-[#1A1A1A] placeholder:text-[#8A8A8A] focus:outline-none focus:ring-1 focus:ring-black"
             style={{ background: "linear-gradient(105deg, rgba(114,227,189,0.247) 0%, rgba(219,165,253,0.194) 48%, rgba(255,198,247,0.212) 88%), #CBDEE1" }}
           />
           <button
@@ -107,7 +107,8 @@ function EmptyShelf() {
             className="absolute right-2 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-[6px] border border-black bg-transparent transition-opacity hover:opacity-60 active:opacity-40"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-              <path d="M8 1L9.5 6.5L15 8L9.5 9.5L8 15L6.5 9.5L1 8L6.5 6.5L8 1Z" stroke="black" strokeWidth="1.2" strokeLinejoin="round" />
+              <path d="M5.5 4L6.8 8.2L11 9.5L6.8 10.8L5.5 15L4.2 10.8L0 9.5L4.2 8.2Z" fill="black"/>
+              <path d="M12.5 1.5L13.1 3.4L15 4L13.1 4.6L12.5 6.5L11.9 4.6L10 4L11.9 3.4Z" fill="black"/>
             </svg>
           </button>
         </form>

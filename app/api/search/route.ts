@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams.get("q")?.trim() ?? "";
   if (!q) return NextResponse.json({ books: [] });
 
-  const googleBooks = await searchBooks(q);
+  const googleBooks = await searchBooks(q, 50);
 
   const books: BookResult[] = googleBooks.map((b) => ({
     id: b.id,

@@ -127,17 +127,19 @@ function normalizeTitle(s: string): string {
  * Deliberately avoids huge exact-title bonuses so an obscure book titled
  * exactly "goon squad" doesn't beat "A Visit from the Goon Squad" (Egan).
  */
-function scoreBook(book: GoogleBook, queryWords: string[]): number {
+function scoreBook(book: GoogleBook, queryWords: string[], authorSearch = false): number {
+  const ratingsCount = book.ratingsCount ?? 0;
+  if (authorSearch) return ratingsCount;
   const title = normalizeTitle(book.title);
   const allWordsInTitle = queryWords.every((w) => title.includes(w));
-  const ratingsCount = book.ratingsCount ?? 0;
   return (allWordsInTitle ? 5_000 : 0) + ratingsCount;
 }
 
-async function fetchVolumes(q: string): Promise<VolumeRaw[]> {
+async function fetchVolumes(q: string, startIndex = 0, maxResults = 20): Promise<VolumeRaw[]> {
   const url = buildUrl("/volumes", {
     q,
-    maxResults: "20",
+    startIndex: String(startIndex),
+    maxResults: String(maxResults),
     orderBy: "relevance",
     langRestrict: "en",
   });
@@ -147,43 +149,87 @@ async function fetchVolumes(q: string): Promise<VolumeRaw[]> {
   return (data.items ?? []) as VolumeRaw[];
 }
 
+/** Fetch up to 50 volumes for a query using two parallel requests (API cap is 40/request). */
+async function fetchVolumes50(q: string): Promise<VolumeRaw[]> {
+  const [first, second] = await Promise.all([
+    fetchVolumes(q, 0, 40),
+    fetchVolumes(q, 40, 10),
+  ]);
+  const seen = new Set<string>();
+  const merged: VolumeRaw[] = [];
+  for (const v of [...first, ...second]) {
+    if (!seen.has(v.id)) { seen.add(v.id); merged.push(v); }
+  }
+  return merged;
+}
+
+/**
+ * Returns true if the query looks like a person's name:
+ * exactly two words, no digits, no common non-name words.
+ * Case-insensitive — users often type author names in lowercase.
+ */
+const NON_NAME_WORDS = new Set(["the", "and", "or", "of", "in", "a", "an", "by", "for", "with", "from"]);
+function looksLikePersonName(query: string): boolean {
+  const words = query.trim().split(/\s+/);
+  if (words.length !== 2) return false;
+  if (/\d/.test(query)) return false;
+  return words.every((w) => !NON_NAME_WORDS.has(w.toLowerCase()));
+}
+
 /**
  * Search books by title, author, or keyword.
  *
  * Strategy:
- * 1. For short queries (≤ 3 words), try intitle: first to surface title
- *    matches — falls back to a broad search if fewer than 3 results come back.
- * 2. Always requests orderBy=relevance, maxResults=20, and explicit fields
- *    so ratingsCount is reliably included.
+ * 1. If the query looks like a person's name (two words, no digits), run
+ *    inauthor: and broad searches in parallel (50 results each path), merge,
+ *    deduplicate, and rank by ratingsCount so the author's own books dominate.
+ * 2. For short queries (≤ 3 words), try intitle: first (50 results); falls back
+ *    to a broad 50-result search if fewer than 3 results come back.
  * 3. Deduplicates and re-ranks client-side: books where all query words appear
- *    in the title score a moderate bonus, then ratingsCount breaks all ties —
- *    so popular books like "A Visit from the Goon Squad" beat obscure
- *    exact-title matches.
- * 4. Returns top 8 after re-ranking.
+ *    in the title get a moderate bonus, then ratingsCount breaks all ties.
+ * 4. limit controls how many results are returned (default 50 for keyword
+ *    search; pass 8 for AI recommendations).
  */
-export async function searchBooks(query: string): Promise<GoogleBook[]> {
+export async function searchBooks(query: string, limit = 50): Promise<GoogleBook[]> {
   const words = query.trim().split(/\s+/);
-  const isShort = words.length <= 3;
   const queryWords = words.map((w) => normalizeTitle(w)).filter(Boolean);
+  const isName = looksLikePersonName(query);
 
   let raw: VolumeRaw[] = [];
 
-  if (isShort) {
-    const titleRaw = await fetchVolumes(`intitle:${query}`);
-    if (titleRaw.length >= 3) {
-      raw = titleRaw;
-    } else {
-      const broadRaw = await fetchVolumes(query);
-      const seen = new Set(titleRaw.map((v) => v.id));
-      raw = [...titleRaw, ...broadRaw.filter((v) => !seen.has(v.id))];
-    }
+  if (isName) {
+    const [authorRaw, broadRaw] = await Promise.all([
+      fetchVolumes50(`inauthor:"${query}"`),
+      fetchVolumes50(query),
+    ]);
+    const seen = new Set(authorRaw.map((v) => v.id));
+    raw = [...authorRaw, ...broadRaw.filter((v) => !seen.has(v.id))];
+
+    const authorBooks = raw.map(volumeToGoogleBook);
+    // For author searches: rank purely by ratingsCount so title-match bonus doesn't
+    // elevate books *about* the author above books *by* the author. Stable sort
+    // preserves inauthor: head-of-list position as tiebreaker when counts equal.
+    authorBooks.sort((a, b) => (b.ratingsCount ?? 0) - (a.ratingsCount ?? 0));
+    return authorBooks.slice(0, limit);
   } else {
-    raw = await fetchVolumes(query);
+    const isShort = words.length <= 3;
+    if (isShort) {
+      const titleRaw = await fetchVolumes50(`intitle:${query}`);
+      if (titleRaw.length >= 3) {
+        raw = titleRaw;
+      } else {
+        const broadRaw = await fetchVolumes50(query);
+        const seen = new Set(titleRaw.map((v) => v.id));
+        raw = [...titleRaw, ...broadRaw.filter((v) => !seen.has(v.id))];
+      }
+    } else {
+      raw = await fetchVolumes50(query);
+    }
   }
 
   const books = raw.map(volumeToGoogleBook);
   books.sort((a, b) => scoreBook(b, queryWords) - scoreBook(a, queryWords));
-  return books.slice(0, 8);
+  return books.slice(0, limit);
 }
 
 /** Fetch a single book's full details by Google Books volume ID. */
@@ -244,5 +290,5 @@ export async function getCoverUrlByIsbn(
  * Appends a subject:fiction hint to steer results toward literary titles.
  */
 export async function searchByMood(prompt: string): Promise<GoogleBook[]> {
-  return searchBooks(`${prompt}+subject:fiction`);
+  return searchBooks(`${prompt}+subject:fiction`, 8);
 }

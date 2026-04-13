@@ -21,12 +21,13 @@ export default async function SearchPage({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const { q } = await searchParams;
+  const { q, page } = await searchParams;
   const query = typeof q === "string" ? q.trim() : "";
+  const initialPage = typeof page === "string" ? Math.max(1, parseInt(page, 10) || 1) : 1;
 
   let initialResults: BookResult[] = [];
   if (query) {
-    const googleBooks = await searchBooks(query);
+    const googleBooks = await searchBooks(query, 50);
     initialResults = googleBooks.map((b) => ({
       id: b.id,
       title: b.title,
@@ -45,7 +46,11 @@ export default async function SearchPage({
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
       <TopNav />
       <main className="flex flex-col gap-6 px-8 py-8">
-        <SearchClient initialQuery={query} initialResults={initialResults} />
+        <SearchClient
+          initialQuery={query}
+          initialResults={initialResults}
+          initialPage={initialPage}
+        />
       </main>
     </div>
   );

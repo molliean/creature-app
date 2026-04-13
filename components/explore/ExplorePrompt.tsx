@@ -33,7 +33,7 @@ export function ExplorePrompt() {
   return (
     <div className="flex w-full flex-col gap-5">
       <form onSubmit={handleSubmit}>
-        <div className="relative w-full border border-black" style={{ background: "linear-gradient(105deg, rgba(114,227,189,0.247) 0%, rgba(219,165,253,0.194) 48%, rgba(255,198,247,0.212) 88%), #CBDEE1" }}>
+        <div className="relative w-full rounded-[5px] border border-black" style={{ background: "linear-gradient(105deg, rgba(114,227,189,0.247) 0%, rgba(219,165,253,0.194) 48%, rgba(255,198,247,0.212) 88%), #CBDEE1" }}>
           <textarea
             className="type-h3 h-[200px] w-full resize-none bg-transparent px-6 py-5 text-black placeholder:text-[#8A8A8A] focus:outline-none"
             placeholder="A sweeping historical novel set in 1920s Paris..."
@@ -76,7 +76,7 @@ export function ExplorePrompt() {
                 key={chip}
                 type="button"
                 onClick={() => handleChipClick(chip)}
-                className="type-body inline-flex w-fit items-center justify-start rounded-[7px] border border-black px-[10px] py-[6px] text-black transition-colors hover:bg-black/10 active:bg-black/20"
+                className="type-body inline-flex w-fit items-center justify-start rounded-[20px] border border-black px-[10px] py-[6px] text-black transition-colors hover:bg-black/10 active:bg-black/20"
                 style={{ borderWidth: "0.5px" }}
               >
                 {chip}

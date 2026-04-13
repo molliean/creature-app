@@ -4,16 +4,20 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { BookResultCard, type BookResult } from "@/components/explore/BookResultCard";
 
+const PAGE_SIZE = 10;
+
 type Props = {
   initialQuery: string;
   initialResults: BookResult[];
+  initialPage?: number;
 };
 
-export function SearchClient({ initialQuery, initialResults }: Props) {
+export function SearchClient({ initialQuery, initialResults, initialPage = 1 }: Props) {
   const [inputValue, setInputValue] = useState(initialQuery);
   const [activeQuery, setActiveQuery] = useState(initialQuery);
   const [results, setResults] = useState<BookResult[]>(initialResults);
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(initialPage);
   const router = useRouter();
 
   // Sync state when the page navigates to a new query (e.g. from the nav bar
@@ -22,6 +26,7 @@ export function SearchClient({ initialQuery, initialResults }: Props) {
     setInputValue(initialQuery);
     setActiveQuery(initialQuery);
     setResults(initialResults);
+    setPage(initialPage);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialQuery]);
 
@@ -32,6 +37,7 @@ export function SearchClient({ initialQuery, initialResults }: Props) {
 
     setIsLoading(true);
     setActiveQuery(q);
+    setPage(1);
     router.replace(`/search?q=${encodeURIComponent(q)}`, { scroll: false });
 
     try {
@@ -44,6 +50,19 @@ export function SearchClient({ initialQuery, initialResults }: Props) {
       setIsLoading(false);
     }
   }
+
+  function goToPage(next: number) {
+    setPage(next);
+    const url = activeQuery
+      ? `/search?q=${encodeURIComponent(activeQuery)}&page=${next}`
+      : `/search?page=${next}`;
+    router.replace(url, { scroll: false });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  const totalPages = Math.max(1, Math.ceil(results.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages);
+  const pageResults = results.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE);
 
   const skeletons = (
     <div className="flex flex-col gap-4">
@@ -69,7 +88,7 @@ export function SearchClient({ initialQuery, initialResults }: Props) {
   return (
     <div className="flex flex-col gap-6">
       {/* Search bar */}
-      <form onSubmit={handleSubmit} role="search" className="flex gap-3">
+      <form onSubmit={handleSubmit} role="search" className="flex gap-3 max-w-[480px]">
         <label className="sr-only" htmlFor="search-input">
           Search books
         </label>
@@ -78,12 +97,12 @@ export function SearchClient({ initialQuery, initialResults }: Props) {
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          className="type-body h-[41px] flex-1 border border-black bg-transparent px-4 text-[#1a1a1a] placeholder:text-[#4A4A4A] outline-none focus:ring-1 focus:ring-black"
+          className="type-body h-[41px] flex-1 rounded-[5px] border border-black bg-transparent px-4 text-[#1a1a1a] placeholder:text-[#4A4A4A] outline-none focus:ring-1 focus:ring-black"
           placeholder="Search titles, authors, keywords…"
         />
         <button
           type="submit"
-          className="type-body h-[41px] border border-black bg-black px-6 text-white transition-opacity hover:opacity-80"
+          className="type-body h-[41px] rounded-[20px] border border-black bg-black px-6 text-white transition-opacity hover:opacity-80"
         >
           Search
         </button>
@@ -104,7 +123,7 @@ export function SearchClient({ initialQuery, initialResults }: Props) {
       {/* Results */}
       {isLoading ? skeletons : (
         <div className="flex flex-col gap-4">
-          {results.map((book) => (
+          {pageResults.map((book) => (
             <BookResultCard key={book.id} book={book} />
           ))}
           {!isLoading && activeQuery && results.length === 0 && (
@@ -112,6 +131,31 @@ export function SearchClient({ initialQuery, initialResults }: Props) {
               No results found. Try a different search.
             </p>
           )}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {!isLoading && totalPages > 1 && (
+        <div className="flex items-center gap-4 max-w-[480px]">
+          <button
+            type="button"
+            onClick={() => goToPage(safePage - 1)}
+            disabled={safePage <= 1}
+            className="font-ligconsolata h-[36px] rounded-[20px] border border-black bg-transparent px-5 text-[14px] text-black transition-opacity hover:opacity-60 disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            Previous
+          </button>
+          <span className="font-ligconsolata flex-1 text-center text-[14px] text-[#686868]">
+            Page {safePage} of {totalPages}
+          </span>
+          <button
+            type="button"
+            onClick={() => goToPage(safePage + 1)}
+            disabled={safePage >= totalPages}
+            className="font-ligconsolata h-[36px] rounded-[20px] border border-black bg-transparent px-5 text-[14px] text-black transition-opacity hover:opacity-60 disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            Next
+          </button>
         </div>
       )}
     </div>

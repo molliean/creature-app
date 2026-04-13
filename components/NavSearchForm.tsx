@@ -20,7 +20,7 @@ export function NavSearchForm({ placeholder }: { placeholder: string }) {
       <label className="sr-only" htmlFor="site-search">
         Search
       </label>
-      <div className="flex h-[41px] w-[259px] items-center justify-center gap-[10px] rounded-[10px] border border-black bg-[#CBDEE1] px-3 py-2">
+      <div className="flex h-[41px] w-[259px] items-center justify-center gap-[10px] rounded-[5px] border border-black bg-[#CBDEE1] px-3 py-2">
         <div className="flex h-6 w-[235px] items-center justify-between gap-[95px]">
           <input
             id="site-search"
