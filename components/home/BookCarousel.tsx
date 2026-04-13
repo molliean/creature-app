@@ -37,7 +37,7 @@ export function BookCarousel({ books }: BookCarouselProps) {
               ) : (
                 <>
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/20" />
-                  <div className="absolute bottom-2 left-2 right-2 font-ligconsolata text-[12px] text-white/90">
+                  <div className="absolute bottom-2 left-2 right-2 type-label text-white/90">
                     {book.title}
                   </div>
                 </>
@@ -45,10 +45,10 @@ export function BookCarousel({ books }: BookCarouselProps) {
             </div>
           </Link>
           <div className="max-w-[290px]">
-            <p className="font-ligconsolata truncate text-[16px] leading-[1.049em] font-normal text-black">
+            <p className="font-dm-sans text-[16px] leading-[1.3em] truncate text-black">
               {book.title}
             </p>
-            <p className="font-ligconsolata truncate text-[12px] leading-[1.049em] font-normal text-[#686868]">
+            <p className="font-dm-sans text-[15px] leading-[1.3em] truncate text-[#686868]">
               {book.author}
             </p>
           </div>

@@ -69,12 +69,12 @@ export function SearchClient({ initialQuery, initialResults }: Props) {
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          className="font-ligconsolata h-[41px] flex-1 border border-black bg-transparent px-4 text-[15px] text-[#1a1a1a] placeholder:text-[#4A4A4A] outline-none focus:ring-1 focus:ring-black"
+          className="type-body h-[41px] flex-1 border border-black bg-transparent px-4 text-[#1a1a1a] placeholder:text-[#4A4A4A] outline-none focus:ring-1 focus:ring-black"
           placeholder="Search titles, authors, keywords…"
         />
         <button
           type="submit"
-          className="font-ligconsolata h-[41px] border border-black bg-black px-6 text-[15px] text-white transition-opacity hover:opacity-80"
+          className="type-body h-[41px] border border-black bg-black px-6 text-white transition-opacity hover:opacity-80"
         >
           Search
         </button>

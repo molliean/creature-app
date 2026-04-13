@@ -11,7 +11,7 @@ type MonthlyChartProps = {
 export function MonthlyChart({ data, max }: MonthlyChartProps) {
   return (
     <div className="flex flex-col gap-4 border border-black bg-[#CBDEE1] p-6">
-      <p className="font-shippori-mincho text-[24px] leading-[1.049em] font-normal text-black">
+      <p className="type-h2 text-[#1A1A1A]">
         Books read by month
       </p>
       <div className="flex h-[160px] items-end gap-[6px]">
@@ -21,11 +21,11 @@ export function MonthlyChart({ data, max }: MonthlyChartProps) {
             <div key={month} className="flex flex-1 flex-col items-center gap-2">
               <div className="flex w-full flex-col items-center justify-end" style={{ height: "128px" }}>
                 <div
-                  className="w-full bg-black"
+                  className="w-full bg-[#1A1A1A]"
                   style={{ height: `${pct}%`, minHeight: books > 0 ? "2px" : "0" }}
                 />
               </div>
-              <span className="font-ligconsolata text-[10px] leading-[1em] text-[#686868]">
+              <span className="type-body text-[#686868]">
                 {month}
               </span>
             </div>

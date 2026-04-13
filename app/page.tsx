@@ -11,7 +11,7 @@ export default function LandingPage() {
     <div className="flex h-screen w-full flex-col overflow-hidden bg-[#CBDEE1]">
       {/* Top bar */}
       <header className="flex w-full items-center justify-between px-8 py-5">
-        <span className="font-rubik-beastly text-[40px] leading-none text-[#F79E1B]">
+        <span className="type-logo leading-none text-[#F79E1B]">
           Creature
         </span>
         <Link
@@ -27,7 +27,7 @@ export default function LandingPage() {
         {/* Left: copy + CTAs */}
         <div className="flex flex-col gap-8 shrink-0 max-w-[480px]">
           <div className="flex flex-col gap-4">
-            <h1 className="font-shippori-mincho text-[52px] leading-[1.2em] font-normal text-black">
+            <h1 className="type-h1 text-black">
               Your reading life,<br />beautifully tracked.
             </h1>
             <p className="font-ligconsolata text-[18px] leading-[1.6em] text-[#4A4A4A]">

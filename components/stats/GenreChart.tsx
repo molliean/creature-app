@@ -11,7 +11,7 @@ type GenreChartProps = {
 export function GenreChart({ data, total }: GenreChartProps) {
   return (
     <div className="flex flex-col gap-4 border border-black bg-[#CBDEE1] p-6">
-      <p className="font-shippori-mincho text-[24px] leading-[1.049em] font-normal text-black">
+      <p className="type-h2 text-[#1A1A1A]">
         By genre
       </p>
       <div className="flex flex-col gap-3">
@@ -20,15 +20,15 @@ export function GenreChart({ data, total }: GenreChartProps) {
           return (
             <div key={genre} className="flex flex-col gap-1">
               <div className="flex items-baseline justify-between">
-                <span className="font-ligconsolata text-[13px] leading-[1.049em] text-black">
+                <span className="type-body text-[#1A1A1A]">
                   {genre}
                 </span>
-                <span className="font-ligconsolata text-[12px] leading-[1.049em] text-[#686868]">
+                <span className="type-body text-[#686868]">
                   {count}
                 </span>
               </div>
-              <div className="h-[1px] w-full bg-black/10">
-                <div className="h-full bg-black" style={{ width: `${pct}%` }} />
+              <div className="h-[1px] w-full bg-[#1A1A1A]/10">
+                <div className="h-full bg-[#1A1A1A]" style={{ width: `${pct}%` }} />
               </div>
             </div>
           );

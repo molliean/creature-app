@@ -50,9 +50,9 @@ export default async function Home() {
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
       <TopNav />
       <main className="flex min-h-[982px] w-full flex-col gap-[17px]">
-        <section className="flex w-full flex-col gap-[17px] pl-6">
+        <section className="flex w-full flex-col gap-[17px] pl-6 pt-10">
           <div className="flex items-center justify-start gap-[10px] p-[10px]">
-            <h1 className="font-shippori-mincho text-[40px] leading-[1.448em] font-normal text-black">
+            <h1 className="type-h1 text-black">
               My Bookshelf
             </h1>
           </div>
