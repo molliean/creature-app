@@ -10,7 +10,7 @@ type GenreChartProps = {
 
 export function GenreChart({ data, total }: GenreChartProps) {
   return (
-    <div className="flex flex-col gap-4 border border-black bg-[#CBDEE1] p-6">
+    <div className="flex flex-col gap-4 bg-[#CBDEE1] p-6">
       <p className="type-h2 text-[#1A1A1A]">
         By genre
       </p>

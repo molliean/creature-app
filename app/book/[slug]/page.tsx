@@ -74,7 +74,9 @@ export default async function BookDetailPage({
   // Auth + shelf status
   const { userId } = await auth();
   const bookId = googleBook?.id ?? slug;
-  const shelfStatus = userId ? await isBookOnShelf(userId, bookId) : null;
+  const { status: shelfStatus, isFavorite: initialFavorite } = userId
+    ? await isBookOnShelf(userId, bookId)
+    : { status: null, isFavorite: false };
 
   // Prefer the Google Books URL for Supabase storage — it's far more reliable than
   // the OL ?default=false URL, which 404s for many books and has no fallback on the shelf.
@@ -141,6 +143,7 @@ export default async function BookDetailPage({
             <ActionButtons
               book={{ bookId, title, author, coverUrl: storedCoverUrl, isbn: isbn ?? undefined }}
               initialStatus={shelfStatus}
+              initialFavorite={initialFavorite}
             />
             {shopUrl && (
               <Link

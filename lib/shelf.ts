@@ -1,6 +1,6 @@
 import { getAdminClient } from "./supabase";
 
-export type ShelfStatus = "reading" | "want_to_read" | "finished" | "dnf" | "favorite";
+export type ShelfStatus = "reading" | "want_to_read" | "finished" | "dnf";
 
 export type ShelfBook = {
   id: string;
@@ -10,8 +10,14 @@ export type ShelfBook = {
   coverUrl: string | null;
   isbn: string | null;
   status: ShelfStatus;
+  isFavorite: boolean;
   addedAt: string;
   updatedAt: string;
+};
+
+export type ShelfInfo = {
+  status: ShelfStatus | null;
+  isFavorite: boolean;
 };
 
 type BookInput = {
@@ -31,6 +37,7 @@ function rowToShelfBook(row: Record<string, unknown>): ShelfBook {
     coverUrl: (row.cover_url as string) ?? null,
     isbn: (row.isbn as string) ?? null,
     status: row.status as ShelfStatus,
+    isFavorite: (row.is_favorite as boolean) ?? false,
     addedAt: row.added_at as string,
     updatedAt: row.updated_at as string,
   };
@@ -51,23 +58,27 @@ export async function getUserShelf(userId: string): Promise<ShelfBook[]> {
 export async function isBookOnShelf(
   userId: string,
   bookId: string
-): Promise<ShelfStatus | null> {
+): Promise<ShelfInfo> {
   const db = getAdminClient();
   const { data, error } = await db
     .from("shelf_books")
-    .select("status")
+    .select("status, is_favorite")
     .eq("user_id", userId)
     .eq("book_id", bookId)
     .maybeSingle();
 
   if (error) throw new Error(error.message);
-  return data ? (data.status as ShelfStatus) : null;
+  return {
+    status: data ? (data.status as ShelfStatus) : null,
+    isFavorite: data ? (data.is_favorite as boolean) ?? false : false,
+  };
 }
 
 export async function upsertBookStatus(
   userId: string,
   book: BookInput,
-  status: ShelfStatus
+  status: ShelfStatus,
+  isFavorite: boolean = false
 ): Promise<void> {
   const db = getAdminClient();
   const { error } = await db
@@ -81,10 +92,26 @@ export async function upsertBookStatus(
         cover_url: book.coverUrl ?? null,
         isbn: book.isbn ?? null,
         status,
+        is_favorite: isFavorite,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "user_id,book_id" }
     );
+
+  if (error) throw new Error(error.message);
+}
+
+export async function setFavorite(
+  userId: string,
+  bookId: string,
+  isFavorite: boolean
+): Promise<void> {
+  const db = getAdminClient();
+  const { error } = await db
+    .from("shelf_books")
+    .update({ is_favorite: isFavorite, updated_at: new Date().toISOString() })
+    .eq("user_id", userId)
+    .eq("book_id", bookId);
 
   if (error) throw new Error(error.message);
 }

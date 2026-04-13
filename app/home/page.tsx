@@ -18,7 +18,7 @@ export default async function Home() {
       <main className="flex flex-1 min-h-0 flex-col w-full">
         <section className="flex flex-1 min-h-0 flex-col gap-[17px] pl-6 pt-10">
           <div className="flex items-center justify-start gap-[10px] p-[10px]">
-            <h1 className="type-h1 text-black">
+            <h1 className="font-shippori-mincho text-[40px] leading-[1.448em] font-normal text-black">
               My Bookshelf
             </h1>
           </div>

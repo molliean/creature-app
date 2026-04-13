@@ -10,13 +10,15 @@ type HomeShelfProps = {
   shelf: ShelfBook[];
 };
 
-const STATUS_TABS: { label: string; status: ShelfStatus | null }[] = [
-  { label: "All",               status: null },
-  { label: "Currently reading", status: "reading" },
-  { label: "Want to read",      status: "want_to_read" },
-  { label: "Finished",          status: "finished" },
-  { label: "Didn't finish",     status: "dnf" },
-  { label: "Favorites",         status: "favorite" },
+type TabFilter = ShelfStatus | "all" | "favorites";
+
+const STATUS_TABS: { label: string; filter: TabFilter }[] = [
+  { label: "All",               filter: "all" },
+  { label: "Currently reading", filter: "reading" },
+  { label: "Want to read",      filter: "want_to_read" },
+  { label: "Finished",          filter: "finished" },
+  { label: "Didn't finish",     filter: "dnf" },
+  { label: "Favorites",         filter: "favorites" },
 ];
 
 function shelfBookToCarouselBook(b: ShelfBook) {
@@ -61,12 +63,12 @@ function EmptyShelf() {
       <div className="flex w-[390px] flex-col items-center gap-7 pointer-events-auto">
 
         {/* Heading */}
-        <p className="type-h1 whitespace-nowrap text-[#1A1A1A]">Your shelf is empty</p>
+        <p className="font-shippori-mincho whitespace-nowrap text-[40px] leading-[1.448em] font-normal text-[#1A1A1A]">Your shelf is empty</p>
 
         {/* Regular search */}
         <div className="flex w-full flex-col gap-2">
           <p className="type-body text-center text-[#1A1A1A]">Search by title, author, or keyword</p>
-          <form onSubmit={handleSearch} className="relative w-full">
+          <form onSubmit={handleSearch} className="relative w-[350px] self-center">
             <input
               type="text"
               value={searchValue}
@@ -132,14 +134,18 @@ function EmptyTab() {
 export function HomeShelf({ shelf }: HomeShelfProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const activeStatus = STATUS_TABS[activeIndex].status;
-  const filtered = activeStatus === null
-    ? shelf
-    : shelf.filter((b) => b.status === activeStatus);
+  const activeFilter = STATUS_TABS[activeIndex].filter;
+  const filtered =
+    activeFilter === "all"      ? shelf :
+    activeFilter === "favorites" ? shelf.filter((b) => b.isFavorite) :
+    shelf.filter((b) => b.status === activeFilter);
 
-  const tabItems = STATUS_TABS.map(({ label, status }) => ({
+  const tabItems = STATUS_TABS.map(({ label, filter }) => ({
     label,
-    count: status === null ? shelf.length : shelf.filter((b) => b.status === status).length,
+    count:
+      filter === "all"       ? shelf.length :
+      filter === "favorites" ? shelf.filter((b) => b.isFavorite).length :
+      shelf.filter((b) => b.status === filter).length,
   }));
 
   const rows = chunk(filtered.map(shelfBookToCarouselBook), 6);

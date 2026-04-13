@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NavSearchForm } from "@/components/NavSearchForm";
+import { NavLinks } from "@/components/NavLinks";
 import { UserMenu } from "@/components/UserMenu";
 
 type NavItem = {
@@ -33,15 +34,7 @@ export function TopNav({
             {brand}
           </Link>
           <nav aria-label="Primary">
-            <ul className="font-shippori-mincho flex flex-wrap items-center gap-10 text-[20px] leading-[1.049em] font-normal text-black">
-              {links.map((link) => (
-                <li key={link.label}>
-                  <Link className="transition-opacity hover:opacity-70" href={link.href}>
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <NavLinks links={links} />
           </nav>
         </div>
 
