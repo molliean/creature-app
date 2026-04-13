@@ -76,6 +76,10 @@ export default async function BookDetailPage({
   const bookId = googleBook?.id ?? slug;
   const shelfStatus = userId ? await isBookOnShelf(userId, bookId) : null;
 
+  // Prefer the Google Books URL for Supabase storage — it's far more reliable than
+  // the OL ?default=false URL, which 404s for many books and has no fallback on the shelf.
+  const storedCoverUrl = staticBook?.localCover ?? coverLastResortUrl ?? coverUrl ?? undefined;
+
   return (
     <div className="h-screen w-full overflow-hidden bg-[#CBDEE1] text-black">
       <TopNav />
@@ -135,7 +139,7 @@ export default async function BookDetailPage({
           {/* Action buttons + buy link */}
           <div className="flex flex-col gap-4">
             <ActionButtons
-              book={{ bookId, title, author, coverUrl: coverUrl ?? undefined, isbn: isbn ?? undefined }}
+              book={{ bookId, title, author, coverUrl: storedCoverUrl, isbn: isbn ?? undefined }}
               initialStatus={shelfStatus}
             />
             {shopUrl && (
