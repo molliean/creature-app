@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
-import { Inconsolata, Rubik_Beastly, Shippori_Mincho } from "next/font/google";
+import { DM_Sans, Inconsolata, Rubik_Beastly, Shippori_Mincho } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 const ligconsolata = Inconsolata({
   variable: "--font-ligconsolata",
@@ -33,7 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${ligconsolata.variable} ${rubikBeastly.variable} ${shipporiMincho.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${ligconsolata.variable} ${rubikBeastly.variable} ${shipporiMincho.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ClerkProvider>{children}</ClerkProvider>

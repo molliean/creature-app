@@ -24,7 +24,7 @@ export function NavSearchForm({ placeholder }: { placeholder: string }) {
         <div className="flex h-6 w-[235px] items-center justify-between gap-[95px]">
           <input
             id="site-search"
-            className="font-ligconsolata h-[15px] min-w-0 flex-1 bg-transparent text-[14px] leading-[1.049em] font-normal text-[#4A4A4A] placeholder:text-[#4A4A4A] focus:outline-none"
+            className="font-shippori-mincho h-[15px] min-w-0 flex-1 bg-transparent text-[14px] leading-[1.3em] text-[#4A4A4A] placeholder:text-[#4A4A4A] focus:outline-none"
             placeholder={placeholder}
             type="text"
             value={value}

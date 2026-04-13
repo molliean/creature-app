@@ -100,10 +100,10 @@ export default async function BookDetailPage({
           {/* Title + author + metadata */}
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <h1 className="font-shippori-mincho text-[52px] leading-[1.2em] font-normal text-black">
+              <h1 className="type-h1 text-black">
                 {title}
               </h1>
-              <p className="font-ligconsolata text-[22px] leading-[1.049em] font-normal text-black">
+              <p className="font-shippori-mincho text-[22px] leading-[1.049em] font-normal text-black">
                 {author}
               </p>
             </div>
@@ -161,7 +161,7 @@ export default async function BookDetailPage({
               <h2 className="font-shippori-mincho text-[22px] leading-[1.3em] font-normal text-black">
                 About this book
               </h2>
-              <p className="font-ligconsolata text-[15px] leading-[1.7em] font-normal text-[#4A4A4A]">
+              <p className="type-body text-[#4A4A4A]">
                 {description}
               </p>
             </div>

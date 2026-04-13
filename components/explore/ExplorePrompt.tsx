@@ -35,7 +35,7 @@ export function ExplorePrompt() {
       <form onSubmit={handleSubmit}>
         <div className="relative w-full border border-black" style={{ background: "linear-gradient(105deg, rgba(114,227,189,0.247) 0%, rgba(219,165,253,0.194) 48%, rgba(255,198,247,0.212) 88%), #CBDEE1" }}>
           <textarea
-            className="font-ligconsolata h-[200px] w-full resize-none bg-transparent px-6 py-5 text-[18px] leading-[1.5em] font-normal text-black placeholder:text-[#8A8A8A] focus:outline-none"
+            className="type-h3 h-[200px] w-full resize-none bg-transparent px-6 py-5 text-black placeholder:text-[#8A8A8A] focus:outline-none"
             placeholder="A sweeping historical novel set in 1920s Paris..."
             value={value}
             onChange={(e) => setValue(e.target.value)}
@@ -65,7 +65,7 @@ export function ExplorePrompt() {
       </form>
 
       <div className="flex flex-col gap-[24px]">
-        <p className="font-ligconsolata pl-[48px] text-[18px] leading-[1.049em] font-normal text-[#4A4A4A]">
+        <p className="type-h3 pl-[48px] text-[#4A4A4A]">
           Try something like…
         </p>
 
@@ -76,7 +76,7 @@ export function ExplorePrompt() {
                 key={chip}
                 type="button"
                 onClick={() => handleChipClick(chip)}
-                className="font-ligconsolata inline-flex w-fit items-center justify-start rounded-[7px] border border-black px-[10px] py-[6px] text-[14px] leading-[1.049em] font-normal text-black transition-colors hover:bg-black/10 active:bg-black/20"
+                className="type-body inline-flex w-fit items-center justify-start rounded-[7px] border border-black px-[10px] py-[6px] text-black transition-colors hover:bg-black/10 active:bg-black/20"
                 style={{ borderWidth: "0.5px" }}
               >
                 {chip}

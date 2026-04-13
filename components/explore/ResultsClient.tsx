@@ -81,7 +81,7 @@ export function ResultsClient({
     <div className="flex flex-col gap-6">
       {/* Search bar */}
       <div className="flex flex-col gap-2">
-        <p className="font-ligconsolata text-[14px] leading-[1.049em] text-[#686868]">
+        <p className="type-label text-[#686868]">
           Refine your search
         </p>
         <form onSubmit={handleSubmit} className="w-full">
@@ -93,7 +93,7 @@ export function ResultsClient({
             }}
           >
             <textarea
-              className="font-ligconsolata h-[120px] w-full resize-none bg-transparent px-6 py-5 text-[18px] leading-[1.5em] font-normal text-black placeholder:text-[#8A8A8A] focus:outline-none"
+              className="type-h3 h-[120px] w-full resize-none bg-transparent px-6 py-5 text-black placeholder:text-[#8A8A8A] focus:outline-none"
               placeholder="A sweeping historical novel set in 1920s Paris..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}

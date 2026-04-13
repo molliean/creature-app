@@ -25,7 +25,7 @@ export function ResultsSearchBar({ initialQuery }: { initialQuery: string }) {
         }}
       >
         <textarea
-          className="font-ligconsolata h-[120px] w-full resize-none bg-transparent px-6 py-5 text-[18px] leading-[1.5em] font-normal text-black placeholder:text-[#8A8A8A] focus:outline-none"
+          className="type-h3 h-[120px] w-full resize-none bg-transparent px-6 py-5 text-black placeholder:text-[#8A8A8A] focus:outline-none"
           placeholder="A sweeping historical novel set in 1920s Paris..."
           value={value}
           onChange={(e) => setValue(e.target.value)}

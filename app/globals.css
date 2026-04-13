@@ -1,8 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #CBDEE1;
+  --foreground: #1A1A1A;
+
+  /* Color palette */
+  --color-teal-hero: #CBDEE1;
+  --color-teal-medium-light: #9FE1CB;
+  --color-teal-wash: #E1F5EE;
+  --color-green-dark: #085041;
+  --color-green-emerald: #1D9E75;
+  --color-neutral-900: #1A1A1A;
+  --color-neutral-700: #444441;
+  --color-neutral-500: #888780;
+  --color-neutral-300: #B4B2A9;
+  --color-neutral-100: #D3D1C7;
+  --color-white: #FFFFFF;
+  --color-status-want-dark: #3B6D11;
+  --color-status-want-mid: #97C459;
+  --color-status-want-light: #EAF3DE;
+  --color-status-finished-dark: #8A5706;
+  --color-status-finished-mid: #EF9F27;
+  --color-status-finished-light: #FEF3E2;
+  --color-status-dnf-dark: #BD2915;
+  --color-status-dnf-mid: #E24B4A;
+  --color-status-dnf-light: #FFDBDB;
 }
 
 @theme inline {
@@ -10,13 +32,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-ligconsolata);
   --font-mono: var(--font-ligconsolata);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
@@ -35,6 +50,62 @@ body {
 
 .font-shippori-mincho {
   font-family: var(--font-shippori-mincho), serif;
+}
+
+.font-dm-sans {
+  font-family: var(--font-dm-sans), sans-serif;
+}
+
+/* ---- Type scale utilities ---- */
+.type-logo {
+  font-family: var(--font-rubik-beastly), serif;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.185em;
+}
+
+.type-h1 {
+  font-family: var(--font-shippori-mincho), serif;
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 1.448em;
+}
+
+.type-h2 {
+  font-family: var(--font-shippori-mincho), serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.448em;
+}
+
+.type-h3 {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.302em;
+}
+
+.type-body {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.302em;
+}
+
+.type-label {
+  font-family: var(--font-ligconsolata), monospace;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.049em;
+}
+
+.type-eyebrow {
+  font-family: var(--font-ligconsolata), monospace;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1.049em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* ---- Landing page book carousel ---- */

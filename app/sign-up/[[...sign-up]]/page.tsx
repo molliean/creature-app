@@ -29,7 +29,7 @@ export default function SignUpPage() {
   return (
     <div className="flex h-screen w-full items-center justify-center bg-[#CBDEE1]">
       <div className="flex flex-col items-center gap-6">
-        <span className="font-rubik-beastly text-[40px] leading-none text-[#F79E1B]">
+        <span className="type-logo leading-none text-[#F79E1B]">
           C
         </span>
         <SignUp appearance={appearance} />

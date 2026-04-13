@@ -38,17 +38,17 @@ const genreTotal = genreData.reduce((sum, d) => sum + d.count, 0);
 
 export default function StatsPage() {
   return (
-    <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
+    <div className="min-h-screen w-full bg-[#CBDEE1] text-[#1A1A1A]">
       <TopNav />
       <main className="flex w-full flex-col gap-[17px] px-8 pt-10 pb-16">
         <div className="flex items-center gap-[10px] p-[10px]">
-          <h1 className="font-shippori-mincho text-[40px] leading-[1.448em] font-normal text-black">
+          <h1 className="type-h1 text-[#1A1A1A]">
             Reading stats
           </h1>
         </div>
 
         {/* Stat cards */}
-        <div className="flex justify-center gap-16">
+        <div className="flex justify-center gap-24">
           <StatCard value="47" label="Books read" sublabel="all time" />
           <StatCard value="42" label="Books read" sublabel="this year" />
           <StatCard value="3.5" label="Books per month" sublabel="this year" />

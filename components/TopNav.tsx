@@ -29,11 +29,11 @@ export function TopNav({
     <header className="w-full border-b border-black bg-[#CBDEE1]">
       <div className="flex w-full items-center justify-between gap-[10px] px-8 py-[10px]">
         <div className="flex min-w-0 items-center gap-[39px]">
-          <Link href="/home" className="font-rubik-beastly h-[47px] w-[30px] shrink-0 text-left text-[40px] leading-[1.185em] font-normal text-[#F79E1B]">
+          <Link href="/home" className="type-logo h-[47px] w-[30px] shrink-0 text-left text-[#F79E1B]">
             {brand}
           </Link>
           <nav aria-label="Primary">
-            <ul className="font-ligconsolata flex flex-wrap items-center gap-10 text-[20px] leading-[1.049em] font-normal text-black">
+            <ul className="font-shippori-mincho flex flex-wrap items-center gap-10 text-[20px] leading-[1.049em] font-normal text-black">
               {links.map((link) => (
                 <li key={link.label}>
                   <Link className="transition-opacity hover:opacity-70" href={link.href}>
