@@ -152,17 +152,20 @@ export function HomeShelf({ shelf }: HomeShelfProps) {
   const rows = chunk(filtered.map(shelfBookToCarouselBook), 6);
 
   return (
-    <div className="flex flex-1 min-h-0 flex-col gap-6">
-      <Tabs items={tabItems} activeIndex={activeIndex} onSelect={setActiveIndex} />
+    <div className="flex flex-col">
+      {/* Tabs stick below the TopNav (TopNav height = 67px) */}
+      <div className="sticky top-[67px] z-10 bg-[#CBDEE1]">
+        <Tabs items={tabItems} activeIndex={activeIndex} onSelect={setActiveIndex} />
+      </div>
 
       {filtered.length === 0 ? (
         activeIndex === 0 ? <EmptyShelf /> : <EmptyTab />
       ) : (
-        <div className="flex flex-col gap-9 overflow-y-auto pl-3 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex flex-col gap-9 pl-3 pb-12 pt-6">
           {rows.map((row, i) => (
             <div
               key={i}
-              className="w-full overflow-x-auto overflow-y-hidden pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              className="w-full overflow-x-auto pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
             >
               <BookCarousel books={row} />
             </div>

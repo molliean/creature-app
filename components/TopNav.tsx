@@ -27,7 +27,7 @@ export function TopNav({
   searchPlaceholder = "Search titles...",
 }: TopNavProps) {
   return (
-    <header className="w-full border-b border-black bg-[#CBDEE1]">
+    <header className="sticky top-0 z-20 w-full border-b border-black bg-[#CBDEE1]">
       <div className="flex w-full items-center justify-between gap-[10px] px-8 py-[10px]">
         <div className="flex min-w-0 items-center gap-[39px]">
           <Link href="/home" className="type-logo h-[47px] w-[30px] shrink-0 text-left text-[#F79E1B]">

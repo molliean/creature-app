@@ -13,10 +13,10 @@ export default async function Home() {
   const shelf = userId ? await getUserShelf(userId) : [];
 
   return (
-    <div className="flex h-screen flex-col w-full bg-[#CBDEE1] text-black">
+    <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
       <TopNav />
-      <main className="flex flex-1 min-h-0 flex-col w-full">
-        <section className="flex flex-1 min-h-0 flex-col gap-[17px] pl-6 pt-10">
+      <main className="flex flex-col w-full">
+        <section className="flex flex-col gap-[17px] pl-6 pt-10">
           <div className="flex items-center justify-start gap-[10px] p-[10px]">
             <h1 className="font-shippori-mincho text-[40px] leading-[1.448em] font-normal text-black">
               My Bookshelf

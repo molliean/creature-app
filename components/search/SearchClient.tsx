@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { BookResultCard, type BookResult } from "@/components/explore/BookResultCard";
+import { useAuth } from "@clerk/nextjs";
+import { BookResultCard, type BookResult, type CardShelfInfo } from "@/components/explore/BookResultCard";
 
 const PAGE_SIZE = 10;
 
@@ -18,7 +19,9 @@ export function SearchClient({ initialQuery, initialResults, initialPage = 1 }: 
   const [results, setResults] = useState<BookResult[]>(initialResults);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(initialPage);
+  const [shelfStatuses, setShelfStatuses] = useState<Record<string, CardShelfInfo>>({});
   const router = useRouter();
+  const { isSignedIn } = useAuth();
 
   // Sync state when the page navigates to a new query (e.g. from the nav bar
   // while already on the search page — same component instance, new props).
@@ -29,6 +32,19 @@ export function SearchClient({ initialQuery, initialResults, initialPage = 1 }: 
     setPage(initialPage);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialQuery]);
+
+  // Fetch shelf status for all results whenever results or auth state changes.
+  useEffect(() => {
+    if (!isSignedIn || results.length === 0) {
+      setShelfStatuses({});
+      return;
+    }
+    const bookIds = results.map((b) => b.id).join(",");
+    fetch(`/api/shelf/status?bookIds=${bookIds}`)
+      .then((r) => r.json())
+      .then((data) => setShelfStatuses(data as Record<string, CardShelfInfo>))
+      .catch(() => setShelfStatuses({}));
+  }, [results, isSignedIn]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -124,7 +140,12 @@ export function SearchClient({ initialQuery, initialResults, initialPage = 1 }: 
       {isLoading ? skeletons : (
         <div className="flex flex-col gap-4">
           {pageResults.map((book) => (
-            <BookResultCard key={book.id} book={book} />
+            <BookResultCard
+              key={book.id}
+              book={book}
+              shelfInfo={shelfStatuses[book.id]}
+              isAuthenticated={isSignedIn ?? false}
+            />
           ))}
           {!isLoading && activeQuery && results.length === 0 && (
             <p className="font-ligconsolata text-[18px] text-[#686868]">

@@ -36,6 +36,7 @@ export default async function SearchPage({
       publisher: b.publisher,
       pages: b.pageCount,
       genres: b.categories ?? [],
+      isbn: b.isbn,
       coverUrl: b.coverUrl,
       coverFallbackUrl: b.coverFallbackUrl,
       coverLastResortUrl: b.coverLastResortUrl,

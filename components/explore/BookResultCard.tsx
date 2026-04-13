@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { CoverImage } from "@/components/CoverImage";
+import { CardActionButtons } from "@/components/book/CardActionButtons";
+import type { ShelfStatus } from "@/lib/shelf";
 
 export type BookResult = {
   id: string;
@@ -16,14 +18,33 @@ export type BookResult = {
   reason?: string;
 };
 
-export function BookResultCard({ book }: { book: BookResult }) {
+export type CardShelfInfo = {
+  status: ShelfStatus | null;
+  isFavorite: boolean;
+};
+
+type Props = {
+  book: BookResult;
+  shelfInfo?: CardShelfInfo;
+  isAuthenticated?: boolean;
+};
+
+export function BookResultCard({ book, shelfInfo, isAuthenticated }: Props) {
   const meta = [book.year, book.publisher, book.pages ? `${book.pages.toLocaleString()} pages` : undefined]
     .filter(Boolean)
     .join(" · ");
 
+  const bookMeta = {
+    bookId: book.id,
+    title: book.title,
+    author: book.author,
+    coverUrl: book.coverUrl,
+    isbn: book.isbn,
+  };
+
   return (
-    <Link href={`/book/${book.id}`} className="block">
-      <article className="flex gap-[57px] border border-black bg-[#CBDEE1] p-8 transition-opacity hover:opacity-90">
+    <article className="flex flex-col border border-black bg-[#CBDEE1]">
+      <Link href={`/book/${book.id}`} className="flex gap-[57px] p-8 transition-opacity hover:opacity-90">
         {/* Cover */}
         <div
           className="relative shrink-0 overflow-hidden border border-black bg-[#8B9DAA]"
@@ -66,7 +87,18 @@ export function BookResultCard({ book }: { book: BookResult }) {
             </p>
           )}
         </div>
-      </article>
-    </Link>
+      </Link>
+
+      {/* Action buttons — only for authenticated users */}
+      {isAuthenticated && (
+        <div className="px-8 pb-6">
+          <CardActionButtons
+            book={bookMeta}
+            initialStatus={shelfInfo?.status ?? null}
+            initialFavorite={shelfInfo?.isFavorite ?? false}
+          />
+        </div>
+      )}
+    </article>
   );
 }
