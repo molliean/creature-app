@@ -108,6 +108,24 @@ body {
   text-transform: uppercase;
 }
 
+/* ---- Book description HTML prose ---- */
+.book-description b,
+.book-description strong {
+  font-weight: 700;
+}
+
+.book-description i,
+.book-description em {
+  font-style: italic;
+}
+
+/* Google Books descriptions use <br> as paragraph separators.
+   Render each as a block with spacing so text breathes. */
+.book-description br {
+  display: block;
+  margin-bottom: 0.65em;
+}
+
 /* ---- Landing page book carousel ---- */
 @keyframes carousel-left {
   from { transform: translateX(0); }

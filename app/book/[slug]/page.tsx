@@ -8,6 +8,7 @@ import { CoverImage } from "@/components/CoverImage";
 import { getBookBySlug } from "@/lib/books";
 import { getBookById, searchBooks, olCoverUrl, googleCoverUrl, type GoogleBook } from "@/lib/googleBooks";
 import { isBookOnShelf } from "@/lib/shelf";
+import { getAuthorBio } from "@/lib/wikipedia";
 
 const AFFILIATE_ID = "12345";
 
@@ -71,12 +72,15 @@ export default async function BookDetailPage({
 
   const shopUrl = isbn ? `https://bookshop.org/a/${AFFILIATE_ID}/${isbn}` : null;
 
-  // Auth + shelf status
+  // Auth + shelf status + author bio — run in parallel
   const { userId } = await auth();
   const bookId = googleBook?.id ?? slug;
-  const { status: shelfStatus, isFavorite: initialFavorite } = userId
-    ? await isBookOnShelf(userId, bookId)
-    : { status: null, isFavorite: false };
+  const [{ status: shelfStatus, isFavorite: initialFavorite }, authorBio] = await Promise.all([
+    userId
+      ? isBookOnShelf(userId, bookId)
+      : Promise.resolve({ status: null, isFavorite: false }),
+    getAuthorBio(staticBook?.author ?? googleBook?.authors[0] ?? ""),
+  ]);
 
   // Prefer the Google Books URL for Supabase storage — it's far more reliable than
   // the OL ?default=false URL, which 404s for many books and has no fallback on the shelf.
@@ -150,7 +154,7 @@ export default async function BookDetailPage({
                 href={shopUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-ligconsolata inline-flex w-fit items-center gap-2 border border-[#989898] bg-[#D79E2D] px-5 py-3 text-[16px] leading-[1.049em] font-normal text-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] transition-opacity hover:opacity-80"
+                className="font-ligconsolata inline-flex w-fit items-center gap-2 border border-[#989898] rounded-[20px] bg-[#D79E2D] px-5 py-3 text-[16px] leading-[1.049em] font-normal text-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] transition-opacity hover:opacity-80"
               >
                 Buy on Bookshop.org
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
@@ -166,8 +170,21 @@ export default async function BookDetailPage({
               <h2 className="font-shippori-mincho text-[22px] leading-[1.3em] font-normal text-black">
                 About this book
               </h2>
+              <div
+                className="type-body book-description text-[#4A4A4A]"
+                dangerouslySetInnerHTML={{ __html: description }}
+              />
+            </div>
+          )}
+
+          {/* Author bio */}
+          {authorBio && (
+            <div className="flex flex-col gap-3 pr-24">
+              <h2 className="font-shippori-mincho text-[22px] leading-[1.3em] font-normal text-black">
+                {author}
+              </h2>
               <p className="type-body text-[#4A4A4A]">
-                {description}
+                {authorBio}
               </p>
             </div>
           )}
