@@ -39,9 +39,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${ligconsolata.variable} ${rubikBeastly.variable} ${shipporiMincho.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${ligconsolata.variable} ${rubikBeastly.variable} ${shipporiMincho.variable} antialiased h-full`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex flex-col min-h-full">
         <ClerkProvider>{children}</ClerkProvider>
       </body>
     </html>

@@ -14,20 +14,21 @@ export function MonthlyChart({ data, max }: MonthlyChartProps) {
       <p className="type-h2 text-[#1A1A1A]">
         Books read by month
       </p>
-      <div className="flex h-[160px] items-end gap-[6px]">
+      <div className="flex items-end gap-[6px]">
         {data.map(({ month, books }) => {
           const pct = max > 0 ? (books / max) * 100 : 0;
           return (
             <div key={month} className="flex flex-1 flex-col items-center gap-2">
-              <div className="flex w-full flex-col items-center justify-end" style={{ height: "128px" }}>
+              {/* Fixed-height bar container — bar grows upward from bottom */}
+              <div className="flex w-full items-end" style={{ height: "128px" }}>
                 <div
                   className="w-full bg-[#1A1A1A]"
                   style={{ height: `${pct}%`, minHeight: books > 0 ? "2px" : "0" }}
                 />
               </div>
-              <span className="type-body text-[#686868]">
-                {month}
-              </span>
+              {/* Labels sit outside the bar container, never clipped */}
+              <span className="type-body text-[#686868]">{month}</span>
+              <span className="type-label text-[#1A1A1A]">{books}</span>
             </div>
           );
         })}

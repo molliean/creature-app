@@ -93,7 +93,7 @@ body {
 }
 
 .type-label {
-  font-family: var(--font-ligconsolata), monospace;
+  font-family: var(--font-dm-sans), monospace;
   font-weight: 400;
   font-size: 12px;
   line-height: 1.049em;

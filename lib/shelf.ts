@@ -26,6 +26,8 @@ type BookInput = {
   author?: string;
   coverUrl?: string;
   isbn?: string;
+  pageCount?: number;
+  genres?: string[];
 };
 
 function rowToShelfBook(row: Record<string, unknown>): ShelfBook {
@@ -91,8 +93,11 @@ export async function upsertBookStatus(
         author: book.author ?? null,
         cover_url: book.coverUrl ?? null,
         isbn: book.isbn ?? null,
+        page_count: book.pageCount ?? null,
+        genres: book.genres ?? null,
         status,
         is_favorite: isFavorite,
+        date_finished: status === "finished" ? new Date().toISOString() : null,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "user_id,book_id" }

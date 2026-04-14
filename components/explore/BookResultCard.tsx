@@ -40,6 +40,8 @@ export function BookResultCard({ book, shelfInfo, isAuthenticated }: Props) {
     author: book.author,
     coverUrl: book.coverUrl,
     isbn: book.isbn,
+    pageCount: book.pages,
+    genres: book.genres.length > 0 ? book.genres : undefined,
   };
 
   return (

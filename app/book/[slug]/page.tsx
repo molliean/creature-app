@@ -87,14 +87,14 @@ export default async function BookDetailPage({
   const storedCoverUrl = staticBook?.localCover ?? coverLastResortUrl ?? coverUrl ?? undefined;
 
   return (
-    <div className="h-screen w-full overflow-hidden bg-[#CBDEE1] text-black">
+    <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
       <TopNav />
-      <div className="flex h-[calc(100vh-69px)] gap-12 px-8 py-8">
+      <div className="flex items-start gap-12 py-8 pl-8">
 
-        {/* Cover — fills remaining height */}
+        {/* Cover — fixed 200×300 */}
         <div
           className="relative shrink-0 overflow-hidden border border-black bg-[#8B9DAA]"
-          style={{ aspectRatio: "2/3", height: "100%" }}
+          style={{ width: "300px", height: "450px" }}
         >
           {coverUrl && (
             <CoverImage
@@ -102,7 +102,7 @@ export default async function BookDetailPage({
               fallbackSrc={coverFallbackUrl}
               lastResortSrc={coverLastResortUrl}
               alt={`Cover of ${title}`}
-              sizes="33vw"
+              sizes="300px"
               priority
               placeholderTitle={title}
               placeholderAuthor={author}
@@ -110,8 +110,8 @@ export default async function BookDetailPage({
           )}
         </div>
 
-        {/* Right column — scrollable */}
-        <div className="flex flex-1 flex-col gap-8 overflow-y-auto pr-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Right column */}
+        <div className="flex flex-1 flex-col gap-8">
 
           {/* Title + author + metadata */}
           <div className="flex flex-col gap-4">
@@ -145,7 +145,7 @@ export default async function BookDetailPage({
           {/* Action buttons + buy link */}
           <div className="flex flex-col gap-4">
             <ActionButtons
-              book={{ bookId, title, author, coverUrl: storedCoverUrl, isbn: isbn ?? undefined }}
+              book={{ bookId, title, author, coverUrl: storedCoverUrl, isbn: isbn ?? undefined, pageCount: pages, genres: genres.length > 0 ? genres : undefined }}
               initialStatus={shelfStatus}
               initialFavorite={initialFavorite}
             />

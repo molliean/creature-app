@@ -15,6 +15,8 @@ export type BookMeta = {
   author?: string;
   coverUrl?: string;
   isbn?: string;
+  pageCount?: number;
+  genres?: string[];
 };
 
 export async function setShelfStatus(
