@@ -232,6 +232,44 @@ export async function searchBooks(query: string, limit = 50): Promise<GoogleBook
   return books.slice(0, limit);
 }
 
+/**
+ * Find a book by title and author — used for resolving list covers.
+ *
+ * Strategy:
+ * 1. Strip punctuation from the title (? ! , . ' " etc. confuse the API).
+ * 2. Try intitle: + inauthor:lastName — most precise.
+ * 3. Fall back to intitle: only if the combined query returns nothing
+ *    (handles accent mismatches like Bolaño/Bolano, rare author spellings, etc.)
+ */
+export async function getBookByTitleAndAuthor(
+  title: string,
+  author: string
+): Promise<GoogleBook | null> {
+  const lastName = author.split(" ").pop() ?? author;
+  const cleanTitle = title.replace(/[?!,'."":;]/g, "").trim();
+
+  let raw = await fetchVolumes(`intitle:${cleanTitle}+inauthor:${lastName}`, 0, 5);
+
+  // If combined query fails, try title-only (handles accent mismatches etc.)
+  if (raw.length === 0) {
+    raw = await fetchVolumes(`intitle:${cleanTitle}`, 0, 5);
+  }
+
+  // If title is too common (e.g. "Beloved"), fall back to a plain "title author"
+  // query — Google Books relevance ranking surfaces the famous edition first.
+  if (raw.length === 0 || !raw.some((v) =>
+    (v.volumeInfo?.authors ?? []).some((a) =>
+      a.toLowerCase().includes(lastName.toLowerCase())
+    )
+  )) {
+    const plainRaw = await fetchVolumes(`${cleanTitle} ${author}`, 0, 5);
+    if (plainRaw.length > 0) raw = plainRaw;
+  }
+
+  if (raw.length === 0) return null;
+  return volumeToGoogleBook(raw[0]);
+}
+
 /** Fetch a single book's full details by Google Books volume ID. */
 export async function getBookById(id: string): Promise<GoogleBook | null> {
   const url = buildUrl(`/volumes/${id}`);

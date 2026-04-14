@@ -17,7 +17,7 @@ type TopNavProps = {
 const defaultLinks: NavItem[] = [
   { label: "My Shelf", href: "/home" },
   { label: "Explore", href: "/explore" },
-  { label: "Lists", href: "#" },
+  { label: "Lists", href: "/lists" },
   { label: "Stats", href: "/stats" },
 ];
 
