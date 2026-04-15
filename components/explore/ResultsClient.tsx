@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { BookResultCard, type BookResult } from "@/components/explore/BookResultCard";
+import { useAuth } from "@clerk/nextjs";
+import { BookResultCard, type BookResult, type CardShelfInfo } from "@/components/explore/BookResultCard";
 
 // ---------------------------------------------------------------------------
 // Skeleton shown while the AI is fetching
@@ -50,6 +51,7 @@ export function ResultsClient({
   const [results, setResults] = useState(initialResults);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { isSignedIn } = useAuth();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -139,7 +141,7 @@ export function ResultsClient({
 
       {/* Results count */}
       {activeQuery && !isLoading && (
-        <p className="font-ligconsolata text-[24px] leading-[1.049em] font-normal text-black">
+        <p className="font-ligconsolata text-[18px] leading-[1.049em] font-normal text-black md:text-[24px]">
           {results.length} recommendation{results.length !== 1 ? "s" : ""} for &ldquo;{activeQuery}&rdquo;
         </p>
       )}
@@ -150,7 +152,7 @@ export function ResultsClient({
       ) : results.length > 0 ? (
         <div className="flex flex-col gap-6">
           {results.map((book) => (
-            <BookResultCard key={activeQuery + book.id} book={book} />
+            <BookResultCard key={activeQuery + book.id} book={book} isAuthenticated={isSignedIn ?? false} />
           ))}
         </div>
       ) : activeQuery ? (
