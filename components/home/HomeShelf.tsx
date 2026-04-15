@@ -60,7 +60,7 @@ function EmptyShelf() {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center pointer-events-none">
-      <div className="flex w-[390px] flex-col items-center gap-7 pointer-events-auto">
+      <div className="flex w-full max-w-[390px] flex-col items-center gap-7 px-4 pointer-events-auto">
 
         {/* Heading */}
         <p className="font-shippori-mincho whitespace-nowrap text-[40px] leading-[1.448em] font-normal text-[#1A1A1A]">Your shelf is empty</p>
@@ -68,7 +68,7 @@ function EmptyShelf() {
         {/* Regular search */}
         <div className="flex w-full flex-col gap-2">
           <p className="type-body text-center text-[#1A1A1A]">Search by title, author, or keyword</p>
-          <form onSubmit={handleSearch} className="relative w-[350px] self-center">
+          <form onSubmit={handleSearch} className="relative w-full self-center">
             <input
               type="text"
               value={searchValue}
@@ -92,7 +92,7 @@ function EmptyShelf() {
         {/* AI mood search */}
         <div className="flex flex-col gap-2 items-center">
         <p className="type-body text-[#1A1A1A]">or ask the bookseller for something new...</p>
-        <form onSubmit={handleMood} className="relative w-[438px]">
+        <form onSubmit={handleMood} className="relative w-full">
           <input
             type="text"
             value={moodValue}
@@ -132,6 +132,14 @@ function EmptyTab() {
   );
 }
 
+const MOBILE_GROUPS: { label: string; filter: Exclude<TabFilter, "all"> }[] = [
+  { label: "Currently reading", filter: "reading" },
+  { label: "Want to read",      filter: "want_to_read" },
+  { label: "Finished",          filter: "finished" },
+  { label: "Didn't finish",     filter: "dnf" },
+  { label: "Favorites",         filter: "favorites" },
+];
+
 export function HomeShelf({ shelf }: HomeShelfProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -151,27 +159,57 @@ export function HomeShelf({ shelf }: HomeShelfProps) {
 
   const rows = chunk(filtered.map(shelfBookToCarouselBook), 6);
 
+  // Mobile: status-grouped carousels (non-empty groups only)
+  const mobileGroups = MOBILE_GROUPS.map(({ label, filter }) => ({
+    label,
+    books: (
+      filter === "favorites"
+        ? shelf.filter((b) => b.isFavorite)
+        : shelf.filter((b) => b.status === filter)
+    ).map(shelfBookToCarouselBook),
+  })).filter((g) => g.books.length > 0);
+
   return (
     <div className="flex flex-col">
-      {/* Tabs stick below the TopNav (TopNav height = 67px) */}
-      <div className="sticky top-[67px] z-10 bg-[#CBDEE1]">
+      {/* Desktop: sticky tabs */}
+      <div className="hidden md:block sticky top-[67px] z-10 bg-[#CBDEE1]">
         <Tabs items={tabItems} activeIndex={activeIndex} onSelect={setActiveIndex} />
       </div>
 
-      {filtered.length === 0 ? (
-        activeIndex === 0 ? <EmptyShelf /> : <EmptyTab />
-      ) : (
-        <div className="flex flex-col gap-9 pl-3 pb-12 pt-6">
-          {rows.map((row, i) => (
-            <div
-              key={i}
-              className="w-full overflow-x-auto pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-            >
-              <BookCarousel books={row} />
-            </div>
-          ))}
-        </div>
-      )}
+      {/* Desktop: tab-filtered rows */}
+      <div className="hidden md:block">
+        {filtered.length === 0 ? (
+          activeIndex === 0 ? <EmptyShelf /> : <EmptyTab />
+        ) : (
+          <div className="flex flex-col gap-9 pl-3 pb-12 pt-6">
+            {rows.map((row, i) => (
+              <div
+                key={i}
+                className="w-full overflow-x-auto pr-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+              >
+                <BookCarousel books={row} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Mobile: grouped carousels */}
+      <div className="flex flex-col md:hidden">
+        {shelf.length === 0 ? (
+          <EmptyShelf />
+        ) : mobileGroups.length === 0 ? (
+          <EmptyShelf />
+        ) : (
+          <div className="flex flex-col gap-3 px-1 pb-12 pt-3">
+            {mobileGroups.map((group) => (
+              <section key={group.label}>
+                <BookCarousel books={group.books} heading={group.label} />
+              </section>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

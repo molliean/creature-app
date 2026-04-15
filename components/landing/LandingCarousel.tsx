@@ -65,7 +65,7 @@ function CarouselRow({
     // Row wrapper: clips overflow and fills its flex-1 height
     <div className="relative flex-1 overflow-hidden">
       <div
-        className={`flex h-full gap-[3px] ${
+        className={`flex h-full gap-2 ${
           direction === "left" ? "carousel-left" : "carousel-right"
         }`}
       >
@@ -83,8 +83,8 @@ function CarouselRow({
 
 export function LandingCarousel() {
   return (
-    // Outer: fills the preview box, clips overflow, adds left/right vignette
-    <div className="absolute inset-0 flex flex-col gap-[3px]">
+    // Outer: fills the preview box, clips overflow
+    <div className="absolute inset-0 flex flex-col gap-2">
       <CarouselRow books={row1} direction="left" />
       <CarouselRow books={row2} direction="right" />
     </div>

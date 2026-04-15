@@ -35,7 +35,7 @@ export function ExplorePrompt() {
       <form onSubmit={handleSubmit}>
         <div className="relative w-full rounded-[5px] border border-black" style={{ background: "linear-gradient(105deg, rgba(114,227,189,0.247) 0%, rgba(219,165,253,0.194) 48%, rgba(255,198,247,0.212) 88%), #CBDEE1" }}>
           <textarea
-            className="type-h3 h-[200px] w-full resize-none bg-transparent px-6 py-5 text-black placeholder:text-[#8A8A8A] focus:outline-none"
+            className="type-h3 h-[140px] w-full resize-none bg-transparent px-6 py-5 text-black placeholder:text-[14px] placeholder:text-[#8A8A8A] focus:outline-none md:h-[200px] md:placeholder:text-[20px]"
             placeholder="A sweeping historical novel set in 1920s Paris..."
             value={value}
             onChange={(e) => setValue(e.target.value)}
@@ -65,12 +65,12 @@ export function ExplorePrompt() {
       </form>
 
       <div className="flex flex-col gap-[24px]">
-        <p className="type-h3 pl-[48px] text-[#4A4A4A]">
+        <p className="font-dm-sans font-normal leading-[1.302em] pl-0 text-[18px] text-[#4A4A4A] md:pl-[48px] md:text-[20px]">
           Try something like…
         </p>
 
         <div className="flex justify-center">
-          <div className="inline-grid grid-cols-2 gap-x-[24px] gap-y-2">
+          <div className="flex flex-col items-start gap-y-2 md:inline-grid md:grid-cols-2 md:gap-x-[24px]">
             {SUGGESTION_CHIPS.map((chip) => (
               <button
                 key={chip}

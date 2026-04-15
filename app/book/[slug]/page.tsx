@@ -89,12 +89,12 @@ export default async function BookDetailPage({
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
       <TopNav />
-      <div className="flex items-start gap-12 py-8 pl-8">
+      <div className="flex flex-col gap-6 px-4 py-6 md:flex-row md:items-start md:gap-12 md:py-8 md:pl-8 md:pr-0">
 
-        {/* Cover — fixed 200×300 */}
+        {/* Cover — full width + 2:3 ratio on mobile, fixed 300×450 on desktop */}
         <div
-          className="relative shrink-0 overflow-hidden border border-black bg-[#8B9DAA]"
-          style={{ width: "300px", height: "450px" }}
+          className="relative w-full overflow-hidden border border-black bg-[#8B9DAA] md:w-[300px] md:shrink-0 md:h-[450px]"
+          style={{ aspectRatio: "2/3" }}
         >
           {coverUrl && (
             <CoverImage
@@ -102,7 +102,7 @@ export default async function BookDetailPage({
               fallbackSrc={coverFallbackUrl}
               lastResortSrc={coverLastResortUrl}
               alt={`Cover of ${title}`}
-              sizes="300px"
+              sizes="(max-width: 768px) 100vw, 300px"
               priority
               placeholderTitle={title}
               placeholderAuthor={author}
@@ -166,7 +166,7 @@ export default async function BookDetailPage({
 
           {/* Book description */}
           {description && (
-            <div className="flex flex-col gap-3 pr-24">
+            <div className="flex flex-col gap-3 md:pr-24">
               <h2 className="font-shippori-mincho text-[22px] leading-[1.3em] font-normal text-black">
                 About this book
               </h2>
@@ -179,7 +179,7 @@ export default async function BookDetailPage({
 
           {/* Author bio */}
           {authorBio && (
-            <div className="flex flex-col gap-3 pr-24">
+            <div className="flex flex-col gap-3 md:pr-24">
               <h2 className="font-shippori-mincho text-[22px] leading-[1.3em] font-normal text-black">
                 {author}
               </h2>

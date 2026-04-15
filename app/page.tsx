@@ -10,7 +10,7 @@ export default function LandingPage() {
   return (
     <div className="flex h-screen w-full flex-col overflow-hidden bg-[#CBDEE1]">
       {/* Top bar */}
-      <header className="flex w-full items-center justify-between px-8 py-5">
+      <header className="flex w-full items-center justify-between border-b border-[#1A1A1A] px-4 py-[10px] md:px-8 md:py-5">
         <span className="type-logo leading-none text-[#F79E1B]">
           Creature
         </span>
@@ -22,23 +22,23 @@ export default function LandingPage() {
         </Link>
       </header>
 
-      {/* Main content — two columns */}
-      <main className="flex flex-1 items-center gap-16 px-8 overflow-hidden">
-        {/* Left: copy + CTAs */}
-        <div className="flex flex-col gap-8 shrink-0 max-w-[480px]">
-          <div className="flex flex-col gap-4">
-            <h1 className="type-h1 text-black">
-              Your reading life,<br />beautifully tracked.
+      {/* Mobile layout: stacked */}
+      <main className="flex flex-1 flex-col overflow-hidden md:flex-row md:items-center md:gap-16 md:px-8">
+        {/* Copy + CTAs */}
+        <div className="flex shrink-0 flex-col gap-5 px-4 pt-6 pb-6 md:max-w-[480px] md:gap-8 md:px-0 md:pt-0 md:pb-0">
+          <div className="flex flex-col gap-3 md:gap-4">
+            <h1 className="type-h1 text-center text-black md:text-left">
+              Upgrade your<br /> reading life.
             </h1>
-            <p className="font-ligconsolata text-[18px] leading-[1.6em] text-[#4A4A4A]">
+            <p className="font-ligconsolata text-center text-[16px] leading-[1.6em] text-[#4A4A4A] md:text-left md:text-[18px]">
               Explore books that match your mood, keep track of everything you&rsquo;ve read, and discover what to read next.
             </p>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex flex-col items-center gap-4 md:flex-row md:items-center md:gap-6">
             <Link
               href="/sign-up"
-              className="font-ligconsolata inline-flex items-center gap-2 border border-black bg-[#D79E2D] px-6 py-3 text-[16px] leading-[1.049em] font-normal text-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] transition-opacity hover:opacity-80"
+              className="font-ligconsolata inline-flex w-[45vw] items-center justify-center gap-2 border border-black bg-[#D79E2D] px-6 py-3 text-[16px] leading-[1.049em] font-normal text-black shadow-[0px_4px_4px_rgba(0,0,0,0.25)] transition-opacity hover:opacity-80 md:w-auto"
             >
               Get started
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden>
@@ -47,15 +47,15 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/sign-in"
-              className="font-ligconsolata text-[16px] leading-[1.049em] text-black underline transition-opacity hover:opacity-70"
+              className="font-ligconsolata text-center text-[16px] leading-[1.049em] text-black underline transition-opacity hover:opacity-70 md:text-left"
             >
               Already a member? Sign in
             </Link>
           </div>
         </div>
 
-        {/* Right: animated book carousel */}
-        <div className="relative flex-1 h-full max-h-[calc(100vh-120px)] overflow-hidden border border-black shadow-[4px_4px_0px_rgba(0,0,0,0.15)]">
+        {/* Animated book carousel — constrained height on mobile to keep covers small */}
+        <div className="relative mx-4 mb-4 h-[440px] overflow-hidden md:mx-0 md:mb-0 md:h-full md:flex-1 md:max-h-[calc(100vh-120px)]">
           <LandingCarousel />
         </div>
       </main>

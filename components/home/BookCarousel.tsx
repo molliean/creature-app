@@ -18,9 +18,12 @@ type BookCarouselProps = {
 
 export function BookCarousel({ books, heading }: BookCarouselProps) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex min-w-0 flex-col gap-1 md:gap-3 overflow-hidden">
       {heading && (
-        <h2 className="type-h2 pl-[10px] text-[#1A1A1A]">{heading}</h2>
+        <h2 className="type-h3 pl-[10px] text-[#1A1A1A] text-[12px] md:text-[24px]">
+          {heading}
+          <span className="md:hidden type-h3 font-normal text-[#1a1a1a] ml-1.5">({books.length})</span>
+        </h2>
       )}
       <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         <div className="flex w-max gap-[3px]">
@@ -28,7 +31,7 @@ export function BookCarousel({ books, heading }: BookCarouselProps) {
             <article key={book.slug} className="flex flex-col gap-[10px] p-[10px]">
               <Link href={`/book/${book.slug}`} className="block">
                 <div
-                  className={`h-[435px] w-[290px] border border-black relative overflow-hidden ${book.coverUrl ? "" : book.coverTone}`}
+                  className={`h-[180px] w-[120px] md:h-[435px] md:w-[290px] border border-black relative overflow-hidden ${book.coverUrl ? "" : book.coverTone}`}
                 >
                   {book.coverUrl ? (
                     <CoverImage
@@ -36,7 +39,7 @@ export function BookCarousel({ books, heading }: BookCarouselProps) {
                       fallbackSrc={book.coverFallbackUrl}
                       lastResortSrc={book.coverLastResortUrl}
                       alt={`Cover of ${book.title}`}
-                      sizes="290px"
+                      sizes="(max-width: 768px) 120px, 290px"
                       placeholderTitle={book.title}
                       placeholderAuthor={book.author}
                     />
@@ -50,11 +53,11 @@ export function BookCarousel({ books, heading }: BookCarouselProps) {
                   )}
                 </div>
               </Link>
-              <div className="max-w-[290px]">
-                <p className="font-dm-sans text-[16px] leading-[1.3em] truncate text-black">
+              <div className="w-[120px] md:max-w-[290px] md:w-auto">
+                <p className="font-dm-sans text-[13px] md:text-[16px] leading-[1.3em] truncate text-black">
                   {book.title}
                 </p>
-                <p className="font-dm-sans text-[15px] leading-[1.3em] truncate text-[#686868]">
+                <p className="font-dm-sans text-[12px] md:text-[15px] leading-[1.3em] truncate text-[#686868]">
                   {book.author}
                 </p>
               </div>

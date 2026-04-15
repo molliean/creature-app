@@ -104,7 +104,7 @@ export function SearchClient({ initialQuery, initialResults, initialPage = 1 }: 
   return (
     <div className="flex flex-col gap-6">
       {/* Search bar */}
-      <form onSubmit={handleSubmit} role="search" className="flex gap-3 max-w-[480px]">
+      <form onSubmit={handleSubmit} role="search" className="flex gap-3 w-full md:max-w-[480px]">
         <label className="sr-only" htmlFor="search-input">
           Search books
         </label>
@@ -157,7 +157,7 @@ export function SearchClient({ initialQuery, initialResults, initialPage = 1 }: 
 
       {/* Pagination */}
       {!isLoading && totalPages > 1 && (
-        <div className="flex items-center gap-4 max-w-[480px]">
+        <div className="flex items-center gap-4 w-full md:max-w-[480px]">
           <button
             type="button"
             onClick={() => goToPage(safePage - 1)}

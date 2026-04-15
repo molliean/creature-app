@@ -44,15 +44,37 @@ export default async function StatsPage() {
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-[#1A1A1A]">
       <TopNav />
-      <main className="flex w-full flex-col gap-[17px] px-8 pt-10 pb-16">
+      <main className="flex w-full flex-col gap-[17px] px-4 pt-8 pb-16 md:px-8 md:pt-10">
         <div className="flex items-center gap-[10px] p-[10px]">
-          <h1 className="font-shippori-mincho text-[40px] leading-[1.448em] font-normal text-[#1A1A1A]">
+          <h1 className="type-h1 text-[#1A1A1A]">
             Reading stats
           </h1>
         </div>
 
-        {/* Stat cards */}
-        <div className="flex justify-center gap-24">
+        {/* Mobile stat layout */}
+        <div className="flex flex-col gap-1 md:hidden">
+          {/* Row 1: 3 stats */}
+          <div className="grid grid-cols-3 gap-x-2 gap-y-2">
+            <StatCard value={String(stats.booksReadAllTime)}  label="Books read"      sublabel="all time" />
+            <StatCard value={String(stats.booksReadThisYear)} label="Books read"      sublabel="this year" />
+            <StatCard value={perMonthDisplay}                 label="Books per month" sublabel="this year" />
+          </div>
+
+          {/* Row 2: 3 stats */}
+          <div className="grid grid-cols-3 gap-x-2 gap-y-2">
+            <StatCard value={String(stats.wantToRead)}  label="Want to read"  sublabel="on your list" />
+            <StatCard value={String(stats.didntFinish)} label="Didn't finish" sublabel="all time" />
+            <StatCard value={String(stats.favorites)}   label="Favorites"     sublabel="all time" />
+          </div>
+
+          {/* Row 3: pages read full width, centered */}
+          <div className="flex justify-center">
+            <StatCard value={pagesDisplay} label="Pages read" sublabel="this year" />
+          </div>
+        </div>
+
+        {/* Desktop stat layout — single row */}
+        <div className="hidden md:flex md:justify-center md:gap-24">
           <StatCard value={String(stats.booksReadAllTime)}    label="Books read"      sublabel="all time" />
           <StatCard value={String(stats.booksReadThisYear)}   label="Books read"      sublabel="this year" />
           <StatCard value={perMonthDisplay}                   label="Books per month" sublabel="this year" />

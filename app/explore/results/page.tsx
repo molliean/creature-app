@@ -28,7 +28,7 @@ export default async function SearchResultsPage({
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
       <TopNav />
-      <main className="flex flex-col gap-6 px-8 py-8">
+      <main className="flex flex-col gap-6 px-4 py-6 md:px-8 md:py-8">
         <ResultsClient initialQuery={query} initialResults={initialResults} />
       </main>
     </div>

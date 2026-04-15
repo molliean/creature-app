@@ -28,7 +28,7 @@ const shipporiMincho = Shippori_Mincho({
 
 export const metadata: Metadata = {
   title: "Creature",
-  description: "Your reading life, beautifully tracked.",
+  description: "Upgrade your reading life.",
 };
 
 export default function RootLayout({

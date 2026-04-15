@@ -42,7 +42,7 @@ export default async function ListsPage() {
   return (
     <div className="min-h-screen w-full bg-[#CBDEE1] text-[#1A1A1A]">
       <TopNav />
-      <main className="flex flex-col gap-12 px-6 pt-10 pb-16">
+      <main className="flex flex-col gap-8 px-4 pt-8 pb-16 md:gap-12 md:px-6 md:pt-10">
         {/* Page heading */}
         <div className="flex flex-col gap-2 px-[10px]">
           <h1 className="type-h1 text-[#1A1A1A]">Curated lists</h1>
