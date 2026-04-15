@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const SUGGESTION_CHIPS = [
+export const SUGGESTION_CHIPS = [
   "Books with unreliable narrators",
   "A literary page-turner I can't put down",
   "Something to read on a rainy afternoon",

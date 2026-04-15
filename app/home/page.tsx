@@ -16,8 +16,8 @@ export default async function Home() {
     <div className="min-h-screen w-full bg-[#CBDEE1] text-black">
       <TopNav />
       <main className="flex flex-col w-full">
-        <section className="flex flex-col gap-4 pl-4 pt-5 md:gap-[17px] md:pl-6 md:pt-10">
-          <div className="flex items-center justify-start gap-[10px] px-[10px] py-1 md:p-[10px]">
+        <section className="flex flex-col gap-4 px-5 pt-5 md:gap-[17px] md:px-0 md:pl-6 md:pt-10">
+          <div className="flex items-center justify-start gap-[10px] py-1 md:p-[10px]">
             <h1 className="type-h1 text-black">
               My Bookshelf
             </h1>
