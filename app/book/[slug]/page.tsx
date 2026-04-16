@@ -123,21 +123,22 @@ export default async function BookDetailPage({
                 {author}
               </p>
             </div>
-            <div className="flex items-center gap-4">
-              {year && (
-                <>
-                  <span className="font-ligconsolata text-[14px] leading-[1.049em] text-[#686868]">{year}</span>
-                  <span className="text-[#686868]">·</span>
-                </>
-              )}
-              {pages && (
-                <>
-                  <span className="font-ligconsolata text-[14px] leading-[1.049em] text-[#686868]">{pages.toLocaleString()} pages</span>
-                  <span className="text-[#686868]">·</span>
-                </>
+            <div className="flex flex-col gap-1">
+              {(year || pages) && (
+                <div className="flex items-center gap-4">
+                  {year && (
+                    <>
+                      <span className="font-ligconsolata text-[14px] leading-[1.049em] text-[#686868]">{year}</span>
+                      {pages && <span className="text-[#686868]">·</span>}
+                    </>
+                  )}
+                  {pages && (
+                    <span className="font-ligconsolata text-[14px] leading-[1.049em] text-[#686868]">{pages.toLocaleString()} pages</span>
+                  )}
+                </div>
               )}
               {genres.length > 0 && (
-                <span className="font-ligconsolata text-[14px] leading-[1.049em] text-[#686868]">{genres.join(", ")}</span>
+                <span className="font-ligconsolata text-[14px] leading-[1.049em] text-[#686868]">{genres.slice(0, 4).join(", ")}</span>
               )}
             </div>
           </div>

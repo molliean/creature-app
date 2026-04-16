@@ -9,7 +9,7 @@ export type ShelfBook = {
   author: string | null;
   coverUrl: string | null;
   isbn: string | null;
-  status: ShelfStatus;
+  status: ShelfStatus | null;
   isFavorite: boolean;
   addedAt: string;
   updatedAt: string;
@@ -38,7 +38,7 @@ function rowToShelfBook(row: Record<string, unknown>): ShelfBook {
     author: (row.author as string) ?? null,
     coverUrl: (row.cover_url as string) ?? null,
     isbn: (row.isbn as string) ?? null,
-    status: row.status as ShelfStatus,
+    status: (row.status as ShelfStatus) ?? null,
     isFavorite: (row.is_favorite as boolean) ?? false,
     addedAt: row.added_at as string,
     updatedAt: row.updated_at as string,
@@ -51,6 +51,7 @@ export async function getUserShelf(userId: string): Promise<ShelfBook[]> {
     .from("shelf_books")
     .select("*")
     .eq("user_id", userId)
+    .or("status.not.is.null,is_favorite.eq.true")
     .order("updated_at", { ascending: false });
 
   if (error) throw new Error(error.message);
@@ -79,7 +80,7 @@ export async function isBookOnShelf(
 export async function upsertBookStatus(
   userId: string,
   book: BookInput,
-  status: ShelfStatus,
+  status: ShelfStatus | null,
   isFavorite: boolean = false
 ): Promise<void> {
   const db = getAdminClient();

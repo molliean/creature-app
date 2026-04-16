@@ -75,7 +75,7 @@ export function ActionButtons({ book, initialStatus, initialFavorite }: ActionBu
         type="button"
         onClick={handleFavoriteClick}
         disabled={isPending}
-        className={`font-ligconsolata inline-flex items-center gap-2 border border-black px-4 py-2 rounded-[20px] text-[16px] leading-[1.049em] transition-colors disabled:opacity-60 ${
+        className={`type-body inline-flex items-center gap-2 border border-black px-4 py-2 rounded-[20px] text-[16px] leading-[1.049em] transition-colors disabled:opacity-60 ${
           isFavorite ? "bg-[#1D9E75] text-[#CBDEE1] border-transparent" : "bg-transparent text-black hover:bg-black/10"
         }`}
       >
@@ -90,7 +90,7 @@ export function ActionButtons({ book, initialStatus, initialFavorite }: ActionBu
           type="button"
           onClick={() => handleStatusClick(s)}
           disabled={isPending}
-          className={`font-ligconsolata inline-flex items-center gap-2 border border-black px-4 py-2 rounded-[20px] text-[16px] leading-[1.049em] transition-colors disabled:opacity-60 ${
+          className={`type-body inline-flex items-center gap-2 border border-black px-4 py-2 rounded-[20px] text-[16px] leading-[1.049em] transition-colors disabled:opacity-60 ${
             status === s ? "bg-[#1D9E75] text-[#CBDEE1] border-transparent" : "bg-transparent text-black hover:bg-black/10"
           }`}
         >

@@ -4,7 +4,6 @@ import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import {
   upsertBookStatus,
-  setFavorite,
   removeBookFromShelf,
   type ShelfStatus,
 } from "@/lib/shelf";
@@ -39,13 +38,9 @@ export async function toggleFavorite(
   const { userId } = await auth();
   if (!userId) throw new Error("Not authenticated");
 
-  if (currentStatus !== null) {
-    // Book is on shelf — upsert to persist both status and new is_favorite
-    await upsertBookStatus(userId, book, currentStatus, isFavorite);
-  } else {
-    // Book not yet on shelf — only update if a row already exists (no-op otherwise)
-    await setFavorite(userId, book.bookId, isFavorite);
-  }
+  // Upsert always — creates the row if it doesn't exist yet (status=null for
+  // favorites-only books), or updates in place if the book is already on shelf.
+  await upsertBookStatus(userId, book, currentStatus, isFavorite);
 
   revalidatePath("/home");
 }

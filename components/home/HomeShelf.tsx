@@ -97,7 +97,7 @@ function EmptyShelf() {
 
         {/* AI mood search */}
         <div className="flex w-full flex-col gap-2">
-          <p className="type-body text-[#1A1A1A]">or ask the bookseller for something new...</p>
+          <p className="type-body text-center text-[#1A1A1A]">or ask the bookseller for something new...</p>
           <form onSubmit={handleMood} className="relative w-full">
             <textarea
               rows={3}
@@ -128,9 +128,9 @@ function EmptyShelf() {
 
         {/* Suggestion chips */}
         <div className="flex w-full flex-col gap-3">
-          <p className="font-dm-sans font-normal leading-[1.302em] text-[14px] text-[#4A4A4A]">Try something like…</p>
+          <p className="font-dm-sans font-normal leading-[1.302em] text-[14px] text-[#4A4A4A] md:pl-[30px]">Try something like…</p>
           <div className="flex justify-center">
-            <div className="flex flex-col items-start gap-y-2 md:inline-grid md:grid-cols-2 md:gap-x-6">
+            <div className="flex flex-col items-start gap-y-2">
               {SUGGESTION_CHIPS.slice(0, 4).map((chip) => (
                 <button
                   key={chip}
