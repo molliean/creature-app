@@ -66,7 +66,7 @@ function EmptyShelf() {
   return (
     // Mobile: normal document flow. Desktop: fixed overlay centred in viewport.
     <div className="flex flex-col items-center py-8 md:pointer-events-none md:fixed md:inset-0 md:justify-center md:py-0">
-      <div className="flex w-full max-w-[480px] flex-col gap-6 md:pointer-events-auto">
+      <div className="flex w-full max-w-[480px] flex-col gap-6 md:pointer-events-auto md:mt-20">
 
         {/* Heading */}
         <h2 className="type-h1 text-center text-[#1A1A1A]">Your shelf is empty</h2>
